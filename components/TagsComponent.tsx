@@ -6,23 +6,19 @@ const TagsComponent = () => {
   return (
     <Flex
       width="100%"
-      left={0}
-      right={0}
-      zIndex={80}
-      marginTop="50px"
-      backgroundColor={colorMode === "light" ? "#FFFFFF" : "#1a1a1a"}
       padding={{
-        md: "5px 20px",
+        md: "0px 20px",
         sm: "0 5px",
       }}
-      position="fixed"
+      height="45px"
+      backgroundColor={colorMode === "light" ? "#FFFFFF" : "#1a1a1a"}
       borderBottom={
         colorMode === "light" ? "1px solid #EDEFF1" : "1px solid #2D3748"
       }
     >
       <Flex gap="1rem" alignItems="center" paddingTop="3px" paddingBottom="3px">
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="white"
@@ -33,7 +29,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -46,7 +42,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -59,7 +55,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -72,7 +68,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -85,7 +81,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -98,7 +94,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -111,7 +107,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -124,7 +120,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
@@ -137,7 +133,7 @@ const TagsComponent = () => {
           <TagLabel fontWeight="500">StuffStuffStuff</TagLabel>
         </Tag>
         <Tag
-          size={"lg"}
+          size={"md"}
           borderRadius="full"
           variant="solid"
           backgroundColor="#373737"
