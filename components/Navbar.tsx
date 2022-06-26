@@ -31,6 +31,8 @@ type Props = {
   isProfile?: boolean;
   isYourImages?: boolean;
   isSearch?: boolean;
+  isSavedImages?: boolean;
+  isUploadImage?:boolean
 };
 
 const Navbar = (props: Props) => {
@@ -180,7 +182,10 @@ const Navbar = (props: Props) => {
           </MenuList>
         </Menu>
       </Flex>
-      {props.isProfile || props.isYourImages || props.isSearch ? null : (
+      {props.isProfile ||
+      props.isYourImages ||
+      props.isSearch ||
+      props.isSavedImages || props.isUploadImage ? null : (
         <TagsComponent />
       )}
     </Flex>

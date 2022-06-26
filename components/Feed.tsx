@@ -6,6 +6,7 @@ type Props = {
   isProfile?: boolean;
   isYourImages?: boolean;
   isSearch?: boolean;
+  isSavedImages?: boolean;
 };
 
 const Feed = (props: Props) => {
@@ -19,7 +20,10 @@ const Feed = (props: Props) => {
     <div
       style={{
         marginTop:
-          props.isProfile || props.isYourImages || props.isSearch
+          props.isProfile ||
+          props.isYourImages ||
+          props.isSearch ||
+          props.isSavedImages
             ? "20px"
             : "100px",
         width: "100%",
