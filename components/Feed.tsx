@@ -2,7 +2,11 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import ImageBoi from "./Image";
 
-const Feed = () => {
+type Props = {
+  isProfile?: boolean;
+};
+
+const Feed = (props: Props) => {
   const breakPoints = {
     default: 4,
     1200: 3,
@@ -12,7 +16,7 @@ const Feed = () => {
   return (
     <div
       style={{
-        marginTop: "100px",
+        marginTop: props.isProfile ? "20px" : "100px",
         width: "100%",
       }}
     >

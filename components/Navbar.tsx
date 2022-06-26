@@ -27,7 +27,11 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
 
-const Navbar = () => {
+type Props = {
+  isProfile?: boolean;
+};
+
+const Navbar = (props: Props) => {
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   return (
@@ -145,7 +149,7 @@ const Navbar = () => {
           </MenuList>
         </Menu>
       </Flex>
-      <TagsComponent />
+      {props.isProfile ? null : <TagsComponent />}
     </Flex>
   );
 };
