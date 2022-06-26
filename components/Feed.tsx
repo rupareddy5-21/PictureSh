@@ -4,6 +4,8 @@ import ImageBoi from "./Image";
 
 type Props = {
   isProfile?: boolean;
+  isYourImages?: boolean;
+  isSearch?: boolean;
 };
 
 const Feed = (props: Props) => {
@@ -16,7 +18,10 @@ const Feed = (props: Props) => {
   return (
     <div
       style={{
-        marginTop: props.isProfile ? "20px" : "100px",
+        marginTop:
+          props.isProfile || props.isYourImages || props.isSearch
+            ? "20px"
+            : "100px",
         width: "100%",
       }}
     >
