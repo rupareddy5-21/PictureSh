@@ -77,6 +77,16 @@ const Login = () => {
                   leftIcon={<FcGoogle />}
                   variant="solid"
                   borderRadius="lg"
+                  backgroundColor="white"
+                  color="#1a202c"
+                  //   _focus={{
+                  // backgroundColor: "white",
+                  // color: "#1a202c",
+                  //   }}
+                  _hover={{
+                    backgroundColor: "white",
+                    color: "#1a202c",
+                  }}
                 >
                   Continue with google
                 </Button>
