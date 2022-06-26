@@ -16,8 +16,8 @@ a {
 .my-masonry-grid {
   display: -webkit-box;
   display: -ms-flexbox;
+  margin-left: -28px;
   display: flex;
-  margin-left: -30px;
   width: auto;
   padding-top: 10px;
 }
@@ -29,4 +29,16 @@ a {
 .my-masonry-grid_column > div {
   background: grey;
   margin-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #cccccc;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background: #616161;
+  border-radius: 2px;
 }

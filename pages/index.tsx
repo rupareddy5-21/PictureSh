@@ -22,7 +22,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Feed />
+      <Flex paddingLeft="25px" paddingRight="10px">
+        <Feed />
+      </Flex>
     </motion.div>
   );
 };
