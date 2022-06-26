@@ -10,11 +10,22 @@ import {
   Button,
   Tooltip,
   IconButton,
+  Avatar,
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { MdAddAPhoto } from "react-icons/md";
 import TagsComponent from "./TagsComponent";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+} from "@chakra-ui/react";
+import { FaUserCircle } from "react-icons/fa";
+import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
+import { AiFillStar } from "react-icons/ai";
 
 const Navbar = () => {
   const router = useRouter();
@@ -114,34 +125,25 @@ const Navbar = () => {
             <IconButton aria-label="Add image" icon={<MdAddAPhoto />} />
           </Tooltip>
         </Flex>
-        <Flex alignItems="center" gap="1rem">
-          <Button
-            colorScheme="blue"
-            variant="outline"
-            rounded="full"
-            paddingRight="8"
-            paddingLeft="8"
-            display={{
-              md: "flex",
-              sm: "none",
-            }}
-          >
-            Log In
-          </Button>
-          <Button
-            colorScheme="blue"
-            variant="solid"
-            rounded="full"
-            paddingRight="8"
-            paddingLeft="8"
-            display={{
-              md: "flex",
-              sm: "none",
-            }}
-          >
-            Sign Up
-          </Button>
-        </Flex>
+        <Menu>
+          <MenuButton>
+            <Avatar
+              name="Dan Abrahmov"
+              src="https://bit.ly/dan-abramov"
+              cursor="pointer"
+            />
+          </MenuButton>
+          <MenuList>
+            <MenuItem icon={<FaUserCircle size={18} />}>Your profile</MenuItem>
+            <MenuItem icon={<IoImages size={18} />}>Your images</MenuItem>
+            <MenuItem icon={<IoSave size={18} />}>Saved images</MenuItem>
+            <MenuDivider />
+            <MenuItem icon={<AiFillStar size={18} />}>Star on github</MenuItem>
+            <MenuItem icon={<IoLogOut size={18} />} color="red.400">
+              Logout
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
       <TagsComponent />
     </Flex>
