@@ -2,8 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
-import { useColorMode } from "@chakra-ui/react";
+import { Flex, useColorMode } from "@chakra-ui/react";
 import TagsComponent from "../components/TagsComponent";
+import Feed from "../components/Feed";
 
 const Home: NextPage = () => {
   const { colorMode } = useColorMode();
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <TagsComponent />
+      <Feed />
     </motion.div>
   );
 };
