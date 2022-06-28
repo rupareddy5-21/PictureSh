@@ -26,6 +26,7 @@ import {
 import { FaUserCircle } from "react-icons/fa";
 import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
+import { logout } from "../utils/functions";
 
 type Props = {
   isProfile?: boolean;
@@ -177,7 +178,11 @@ const Navbar = (props: Props) => {
             </MenuItem>
             <MenuDivider />
             <MenuItem icon={<AiFillStar size={18} />}>Star on github</MenuItem>
-            <MenuItem icon={<IoLogOut size={18} />} color="red.400">
+            <MenuItem
+              icon={<IoLogOut size={18} />}
+              color="red.400"
+              onClick={logout}
+            >
               Logout
             </MenuItem>
           </MenuList>

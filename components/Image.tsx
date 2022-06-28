@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiArrowRightUpLine } from "react-icons/ri";
+import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
+import { IoHeartOutline } from "react-icons/io5";
+import { useRouter } from "next/router";
 
 type Props = {
   src?: string;
@@ -9,14 +12,18 @@ type Props = {
 
 const Image = (props: Props) => {
   const [imageHovered, setImageHovered] = useState(false);
+  const router = useRouter();
   return (
     <Flex
       width="100%"
-      cursor="pointer"
+      cursor="zoom-in"
       borderRadius="12px"
       position="relative"
       onMouseEnter={() => setImageHovered(true)}
       onMouseLeave={() => setImageHovered(false)}
+      onClick={() => {
+        router.push("/image/fsfsa");
+      }}
     >
       <img
         className="imgboi"
@@ -44,22 +51,54 @@ const Image = (props: Props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Heading color="white" fontSize="xl" fontWeight="extrabold">
-            Open
-          </Heading>
+          <Flex
+            position="absolute"
+            top={2}
+            left={0}
+            alignItems="center"
+            width="100%"
+            justifyContent="flex-end"
+          >
+            <Button
+              rounded="full"
+              variant="solid"
+              colorScheme="blue"
+              marginRight="10px"
+            >
+              Save
+            </Button>
+          </Flex>
           <Flex
             position="absolute"
             bottom={2}
             left={0}
-            marginLeft="10px"
-            flexWrap="wrap"
             alignItems="center"
-            gap="2px"
+            justifyContent="space-between"
+            width="100%"
           >
-            <RiArrowRightUpLine color="white" />
-            <Heading color="white" fontSize="md" fontWeight="bold">
-              idiotboi
-            </Heading>
+            <Flex
+              alignItems="center"
+              gap="2px"
+              marginLeft="4px"
+              cursor="pointer"
+            >
+              <RiArrowRightUpLine color="white" />
+              <Heading color="white" fontSize="md" fontWeight="bold">
+                idiotboi
+              </Heading>
+            </Flex>
+            <Flex alignItems="center" gap="9px" marginRight="4px">
+              <IconButton
+                icon={<IoHeartOutline size={22} />}
+                aria-label="Like"
+                rounded="full"
+              />
+              <IconButton
+                icon={<FiDownload size={20} />}
+                aria-label="Download"
+                rounded="full"
+              />
+            </Flex>
           </Flex>
         </Flex>
       ) : null}

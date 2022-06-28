@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { Cursor, useTypewriter } from "react-simple-typewriter";
+import { motion } from "framer-motion";
+import { signInWithGoogle } from "../utils/functions";
+import { useSession, getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 const Login = () => {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -18,7 +22,7 @@ const Login = () => {
     onLoopDone() {
       setDisplayLogin(true);
     },
-    typeSpeed: 70,
+    typeSpeed: 90,
     deleteSpeed: 50,
     delaySpeed: 1000,
   });
@@ -39,7 +43,7 @@ const Login = () => {
         overflow="hidden"
       >
         <Flex position="relative" width="100%" height="100%">
-          <video
+          {/* <video
             src="/assets/background.mp4"
             loop
             controls={false}
@@ -50,7 +54,7 @@ const Login = () => {
               height: "100%",
               objectFit: "cover",
             }}
-          />
+          /> */}
         </Flex>
         <Flex
           position="absolute"
@@ -72,25 +76,48 @@ const Login = () => {
               <Cursor cursorStyle="_" />
             </Heading>
             {displayLogin ? (
-              <div>
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: -200,
+                  y: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  x: 0,
+                  y: -100,
+                }}
+                whileHover={{
+                  scale: 1.05,
+                }}
+                whileTap={{
+                  scale: 0.95,
+                }}
+              >
                 <Button
+                  onClick={signInWithGoogle}
                   leftIcon={<FcGoogle />}
                   variant="solid"
                   borderRadius="lg"
                   backgroundColor="white"
                   color="#1a202c"
-                  //   _focus={{
-                  // backgroundColor: "white",
-                  // color: "#1a202c",
-                  //   }}
                   _hover={{
+                    backgroundColor: "white",
+                    color: "#1a202c",
+                  }}
+                  _focus={{
                     backgroundColor: "white",
                     color: "#1a202c",
                   }}
                 >
                   Continue with google
                 </Button>
-              </div>
+              </motion.div>
             ) : null}
           </Flex>
         </Flex>
@@ -100,3 +127,19 @@ const Login = () => {
 };
 
 export default Login;
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const session = await getSession(ctx);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
+}

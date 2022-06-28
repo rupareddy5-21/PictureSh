@@ -1,12 +1,15 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { Flex, useColorMode } from "@chakra-ui/react";
 import Feed from "../components/Feed";
+import variants from "../utils/variants";
+import { getSession, useSession } from "next-auth/react";
 
 const Home: NextPage = () => {
   const { colorMode } = useColorMode();
+  const { data: session } = useSession();
   return (
     <motion.div
       style={{
@@ -14,6 +17,11 @@ const Home: NextPage = () => {
         width: "100%",
         backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
     >
       <Head>
         <title>PictureSh</title>
@@ -29,3 +37,19 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const session = await getSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
+}

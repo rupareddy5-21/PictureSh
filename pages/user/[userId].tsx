@@ -5,6 +5,7 @@ import Head from "next/head";
 import Navbar from "../../components/Navbar";
 import Feed from "../../components/Feed";
 import ProfileComponent from "../../components/ProfileComponent";
+import variants from "../../utils/variants";
 
 const UserProfile = () => {
   const { colorMode } = useColorMode();
@@ -15,6 +16,11 @@ const UserProfile = () => {
         width: "100%",
         backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
     >
       <Head>
         <title>PictureSh - IdiotBoi</title>
