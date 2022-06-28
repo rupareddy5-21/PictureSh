@@ -27,7 +27,15 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
 
-const Navbar = () => {
+type Props = {
+  isProfile?: boolean;
+  isYourImages?: boolean;
+  isSearch?: boolean;
+  isSavedImages?: boolean;
+  isUploadImage?:boolean
+};
+
+const Navbar = (props: Props) => {
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
   return (
@@ -84,7 +92,7 @@ const Navbar = () => {
             </InputLeftElement>
             <Input
               type="text"
-              placeholder="Search for some coding pictures..."
+              placeholder="Search"
               _placeholder={{
                 color: "#797a7a",
               }}
@@ -121,8 +129,8 @@ const Navbar = () => {
               />
             </Tooltip>
           )}
-          <Tooltip label="Add image" openDelay={200}>
-            <IconButton aria-label="Add image" icon={<MdAddAPhoto />} />
+          <Tooltip label="Upload image" openDelay={200}>
+            <IconButton aria-label="Upload image" icon={<MdAddAPhoto />} />
           </Tooltip>
         </Flex>
         <Menu>
@@ -134,9 +142,38 @@ const Navbar = () => {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<FaUserCircle size={18} />}>Your profile</MenuItem>
-            <MenuItem icon={<IoImages size={18} />}>Your images</MenuItem>
-            <MenuItem icon={<IoSave size={18} />}>Saved images</MenuItem>
+            <MenuItem
+              icon={<FaUserCircle size={18} />}
+              onClick={() => {
+                router.push("/user/idiotboi");
+              }}
+            >
+              Your profile
+            </MenuItem>
+            <MenuItem
+              icon={<MdAddAPhoto size={18} />}
+              onClick={() => {
+                router.push("/upload");
+              }}
+            >
+              Upload image
+            </MenuItem>
+            <MenuItem
+              icon={<IoImages size={18} />}
+              onClick={() => {
+                router.push("/yourimages");
+              }}
+            >
+              Your images
+            </MenuItem>
+            <MenuItem
+              icon={<IoSave size={18} />}
+              onClick={() => {
+                router.push("/savedimages");
+              }}
+            >
+              Saved images
+            </MenuItem>
             <MenuDivider />
             <MenuItem icon={<AiFillStar size={18} />}>Star on github</MenuItem>
             <MenuItem icon={<IoLogOut size={18} />} color="red.400">
@@ -145,7 +182,12 @@ const Navbar = () => {
           </MenuList>
         </Menu>
       </Flex>
-      <TagsComponent />
+      {props.isProfile ||
+      props.isYourImages ||
+      props.isSearch ||
+      props.isSavedImages || props.isUploadImage ? null : (
+        <TagsComponent />
+      )}
     </Flex>
   );
 };
