@@ -1,7 +1,6 @@
 import { Avatar, Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React from "react";
-import { IoShare } from "react-icons/io5";
-import { MdCake } from "react-icons/md";
+import { FiShare } from "react-icons/fi";
 
 const ProfileComponent = () => {
   return (
@@ -25,7 +24,7 @@ const ProfileComponent = () => {
           size="xl"
         />
         <Heading fontSize="3xl">IdiotBoi</Heading>
-        <Heading fontSize="18px" fontWeight="normal" color="gray.600">
+        <Heading fontSize="16px" fontWeight="normal" color="gray.600">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio autem
           voluptatibus vero sequi eligendi aspernatur, quam doloremque
           blanditiis amet dignissimos commodi omnis asperiores provident eos?
@@ -57,7 +56,7 @@ const ProfileComponent = () => {
         >
           <IconButton
             aria-label="share"
-            icon={<IoShare size="22px" />}
+            icon={<FiShare size="22px" />}
             borderRadius="full"
             size="lg"
             colorScheme="blue"
@@ -70,12 +69,6 @@ const ProfileComponent = () => {
           >
             Follow
           </Button>
-        </Flex>
-        <Flex alignItems="center" gap="6px" alignSelf="flex-start">
-          <MdCake size={25} color="#404959" />
-          <Heading fontSize="lg" fontWeight="medium" color="gray.600">
-            Joined 10 days ago
-          </Heading>
         </Flex>
       </Flex>
     </Flex>

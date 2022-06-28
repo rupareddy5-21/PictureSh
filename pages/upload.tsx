@@ -12,7 +12,7 @@ const Upload = () => {
       style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: colorMode === "light" ? "#dbe0e6" : "#030303",
+        backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
     >
       <Head>
@@ -21,15 +21,7 @@ const Upload = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar isUploadImage={true} />
-      <Flex
-        marginTop="50px"
-        height="calc(100vh - 50px)"
-        width="100%"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <UploadImageComponent />
-      </Flex>
+      <UploadImageComponent />
     </motion.div>
   );
 };

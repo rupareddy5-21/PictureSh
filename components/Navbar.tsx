@@ -32,7 +32,8 @@ type Props = {
   isYourImages?: boolean;
   isSearch?: boolean;
   isSavedImages?: boolean;
-  isUploadImage?:boolean
+  isUploadImage?: boolean;
+  isSingleImage?: boolean;
 };
 
 const Navbar = (props: Props) => {
@@ -56,7 +57,7 @@ const Navbar = (props: Props) => {
         }}
         width="100%"
         borderBottom={
-          colorMode === "light" ? "1px solid #EDEFF1" : "1px solid #2D3748"
+          colorMode === "light" ? "1px solid #e5e5e5" : "1px solid #373737"
         }
         alignItems="center"
         height="50px"
@@ -185,7 +186,9 @@ const Navbar = (props: Props) => {
       {props.isProfile ||
       props.isYourImages ||
       props.isSearch ||
-      props.isSavedImages || props.isUploadImage ? null : (
+      props.isSavedImages ||
+      props.isUploadImage ||
+      props.isSingleImage ? null : (
         <TagsComponent />
       )}
     </Flex>

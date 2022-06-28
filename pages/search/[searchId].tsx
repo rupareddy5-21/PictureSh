@@ -12,7 +12,7 @@ const Search = () => {
       style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: colorMode === "light" ? "#dbe0e6" : "#030303",
+        backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
     >
       <Head>
@@ -27,7 +27,12 @@ const Search = () => {
         flexDirection="column"
         marginTop="50px"
       >
-        <Heading fontSize="lg" fontWeight="bold" marginTop="30px">
+        <Heading
+          fontSize="lg"
+          fontWeight="bold"
+          marginTop="30px"
+          marginLeft="-10px"
+        >
           Search results
         </Heading>
         <Feed isSearch={true} />
