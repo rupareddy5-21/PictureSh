@@ -62,6 +62,7 @@ const UploadImageComponent = () => {
             <option value="option3">Coffee</option>
             <option value="option3">Idk</option>
             <option value="option3">Shit</option>
+            <option value="option3">Other</option>
           </Select>
           <Button colorScheme="blue" rounded="full">
             Upload

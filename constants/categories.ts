@@ -23,6 +23,9 @@ const categories = [
   {
     title: "Shit",
   },
+  {
+    title: "Other",
+  },
 ];
 
 export default categories;

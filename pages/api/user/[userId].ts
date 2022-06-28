@@ -12,13 +12,11 @@ export default async function UserStuff(
         where: {
           id: userId as string,
         },
-        select: {
-          id: true,
-          name: true,
-          image: true,
+        include: {
+          images: true,
         },
       });
-      res.status(201).json(user);
+      res.status(200).json(user);
     } catch (error: any) {
       res.status(400).json({
         error: error.message,
