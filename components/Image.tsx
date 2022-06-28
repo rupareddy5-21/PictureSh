@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { RiArrowRightUpLine } from "react-icons/ri";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline } from "react-icons/io5";
+import { useRouter } from "next/router";
 
 type Props = {
   src?: string;
@@ -11,6 +12,7 @@ type Props = {
 
 const Image = (props: Props) => {
   const [imageHovered, setImageHovered] = useState(false);
+  const router = useRouter();
   return (
     <Flex
       width="100%"
@@ -19,6 +21,9 @@ const Image = (props: Props) => {
       position="relative"
       onMouseEnter={() => setImageHovered(true)}
       onMouseLeave={() => setImageHovered(false)}
+      onClick={() => {
+        router.push("/image/fsfsa");
+      }}
     >
       <img
         className="imgboi"

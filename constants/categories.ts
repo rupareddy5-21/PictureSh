@@ -6,6 +6,9 @@ const categories = [
     title: "Programming",
   },
   {
+    title: "Music",
+  },
+  {
     title: "Gaming",
   },
   {

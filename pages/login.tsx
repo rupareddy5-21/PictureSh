@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { Button, Flex, Heading } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { Cursor, useTypewriter } from "react-simple-typewriter";
 import { motion } from "framer-motion";
+import { signInWithGoogle } from "../utils/functions";
+import { useSession, getSession } from "next-auth/react";
+import { GetServerSidePropsContext } from "next";
 
 const Login = () => {
   const [displayLogin, setDisplayLogin] = useState(false);
@@ -40,7 +43,7 @@ const Login = () => {
         overflow="hidden"
       >
         <Flex position="relative" width="100%" height="100%">
-          <video
+          {/* <video
             src="/assets/background.mp4"
             loop
             controls={false}
@@ -51,7 +54,7 @@ const Login = () => {
               height: "100%",
               objectFit: "cover",
             }}
-          />
+          /> */}
         </Flex>
         <Flex
           position="absolute"
@@ -97,6 +100,7 @@ const Login = () => {
                 }}
               >
                 <Button
+                  onClick={signInWithGoogle}
                   leftIcon={<FcGoogle />}
                   variant="solid"
                   borderRadius="lg"
@@ -123,3 +127,19 @@ const Login = () => {
 };
 
 export default Login;
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const session = await getSession(ctx);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      session,
+    },
+  };
+}
