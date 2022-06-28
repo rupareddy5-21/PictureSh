@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Flex, useColorMode } from "@chakra-ui/react";
+import { Flex, Heading, useColorMode } from "@chakra-ui/react";
 import Head from "next/head";
 import Navbar from "../../components/Navbar";
 import Feed from "../../components/Feed";
@@ -13,7 +13,7 @@ const UserProfile = () => {
       style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: colorMode === "light" ? "#dbe0e6" : "#030303",
+        backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
     >
       <Head>
@@ -29,6 +29,14 @@ const UserProfile = () => {
         marginTop="50px"
       >
         <ProfileComponent />
+        <Heading
+          fontSize="lg"
+          fontWeight="bold"
+          marginTop="30px"
+          marginLeft="-10px"
+        >
+          Userboi images
+        </Heading>
         <Feed isProfile={true} />
       </Flex>
     </motion.div>

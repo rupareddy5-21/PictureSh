@@ -12,7 +12,7 @@ const ImageDetails = () => {
       style={{
         minHeight: "100vh",
         width: "100%",
-        backgroundColor: colorMode === "light" ? "#dbe0e6" : "#030303",
+        backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
     >
       <Head>

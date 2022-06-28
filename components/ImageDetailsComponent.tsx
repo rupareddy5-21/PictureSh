@@ -8,19 +8,28 @@ import {
   IconButton,
   Input,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline } from "react-icons/io5";
 
 const ImageDetailsComponent = () => {
+  const { colorMode } = useColorMode();
   return (
     <Flex width="100%" justifyContent="center">
-      <Flex width="94%" marginTop="130px" flexDirection="column" gap="2rem">
+      <Flex
+        width="94%"
+        marginTop="130px"
+        flexDirection="column"
+        gap="2rem"
+        marginBottom="10px"
+      >
         <Flex
           padding="20px"
           gap="2rem"
-          backgroundColor="#1a1a1a"
+          backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
           borderRadius="20px"
+          boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
         >
           <img
             src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.guim.co.uk%2Fimg%2Fmedia%2F763573fcc896f41309f7debe3db8ca43894b0ccb%2F1899_0_2613_1568%2Fmaster%2F2613.jpg%3Fwidth%3D445%26quality%3D45%26auto%3Dformat%26fit%3Dmax%26dpr%3D2%26s%3D33b9437f5164c2a1732a5527b7778247&f=1&nofb=1"
