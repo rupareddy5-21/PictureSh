@@ -19,7 +19,6 @@ export default async function ImageStuff(
       const images = await prisma.image.findMany({
         include: { author: true },
       });
-      console.log(session);
       res.status(200).json(images);
     } catch (error: any) {
       res.status(400).json({

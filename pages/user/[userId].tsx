@@ -9,13 +9,11 @@ import variants from "../../utils/variants";
 import { GetServerSidePropsContext } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { UserType } from "../../utils/types";
-import axios from "axios";
+import { wrapper } from "../../redux/store";
+import * as api from "../../utils/api";
+import { getUsers } from "../../redux/actions/userActions";
 
-type Props = {
-  user: UserType;
-};
-
-const UserProfile = (props: Props) => {
+const UserProfile = () => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   return (
@@ -43,10 +41,7 @@ const UserProfile = (props: Props) => {
         flexDirection="column"
         marginTop="50px"
       >
-        <ProfileComponent
-          user={props.user}
-          currentUser={session?.user as UserType}
-        />
+        <ProfileComponent currentUser={session?.user as UserType} />
         <Heading
           fontSize="lg"
           fontWeight="bold"
@@ -62,31 +57,32 @@ const UserProfile = (props: Props) => {
 };
 
 export default UserProfile;
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getSession(ctx);
-  if (!session) {
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const session = await getSession(context);
+    await store.dispatch(getUsers(context?.params?.userId as string));
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+    const { data } = await api.getUser(context?.params?.userId as string);
+    if (data === null) {
+      return {
+        notFound: true,
+        props: {
+          session,
+        },
+      };
+    }
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-  const { data } = await axios.get(
-    "http://localhost:3000/api/user/" + ctx?.params?.userId
-  );
-  if (data === null) {
-    return {
-      notFound: true,
       props: {
         session,
       },
     };
   }
-  return {
-    props: {
-      session,
-      user: data,
-    },
-  };
-}
+);

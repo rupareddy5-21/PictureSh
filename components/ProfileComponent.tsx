@@ -2,13 +2,14 @@ import { Avatar, Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { FiShare } from "react-icons/fi";
 import { UserType } from "../utils/types";
+import { useSelector } from "react-redux";
 
 type Props = {
-  user: UserType;
   currentUser: UserType;
 };
 
 const ProfileComponent = (props: Props) => {
+  const user = useSelector((state: any) => state.user.authData);
   return (
     <Flex
       width="100%"
@@ -24,12 +25,12 @@ const ProfileComponent = (props: Props) => {
         width="40%"
       >
         <Avatar
-          name={props.user?.name}
-          src={props.user?.image}
+          name={user?.name}
+          src={user?.image}
           cursor="pointer"
           size="xl"
         />
-        <Heading fontSize="3xl">{props.user?.name}</Heading>
+        <Heading fontSize="3xl">{user?.name}</Heading>
         <Heading fontSize="16px" fontWeight="normal" color="gray.600">
           I love PictureSh and your mom :)
         </Heading>
@@ -64,7 +65,7 @@ const ProfileComponent = (props: Props) => {
             size="lg"
             colorScheme="blue"
           />
-          {props.user?.id === props.currentUser?.id ? (
+          {user?.id === props.currentUser?.id ? (
             <Button
               borderRadius="full"
               size="lg"
