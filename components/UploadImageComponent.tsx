@@ -7,6 +7,7 @@ const UploadImageComponent = () => {
     <Flex width="100%" justifyContent="center">
       <Flex
         width="80%"
+        marginTop="130px"
         backgroundColor="#1a1a1a"
         borderRadius="20px"
         padding="20px"
@@ -37,12 +38,12 @@ const UploadImageComponent = () => {
         <Flex flex={1} flexDirection="column" gap="2rem">
           <Input
             variant="flushed"
-            placeholder="Add your title"
+            placeholder="Title"
             fontSize="25px"
             size="lg"
           />
           <Textarea placeholder="Description" size="lg" height="130px" />
-          <Select placeholder="Select categories">
+          <Select placeholder="Select category">
             <option value="option1">Programming</option>
             <option value="option2">Music</option>
             <option value="option3">Gaming</option>
