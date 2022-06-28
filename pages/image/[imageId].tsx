@@ -4,11 +4,17 @@ import { useColorMode } from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import Head from "next/head";
 import ImageDetailsComponent from "../../components/ImageDetailsComponent";
+import variants from "../../utils/variants";
 
 const ImageDetails = () => {
   const { colorMode } = useColorMode();
   return (
     <motion.div
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
       style={{
         minHeight: "100vh",
         width: "100%",

@@ -4,11 +4,17 @@ import { motion } from "framer-motion";
 import { Flex, useColorMode } from "@chakra-ui/react";
 import Head from "next/head";
 import UploadImageComponent from "../components/UploadImageComponent";
+import variants from "../utils/variants";
 
 const Upload = () => {
   const { colorMode } = useColorMode();
   return (
     <motion.div
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
       style={{
         minHeight: "100vh",
         width: "100%",

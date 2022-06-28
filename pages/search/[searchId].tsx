@@ -4,11 +4,17 @@ import Navbar from "../../components/Navbar";
 import { motion } from "framer-motion";
 import { Flex, Heading, useColorMode } from "@chakra-ui/react";
 import Feed from "../../components/Feed";
+import variants from "../../utils/variants";
 
 const Search = () => {
   const { colorMode } = useColorMode();
   return (
     <motion.div
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
       style={{
         minHeight: "100vh",
         width: "100%",

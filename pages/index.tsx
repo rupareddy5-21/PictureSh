@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import { Flex, useColorMode } from "@chakra-ui/react";
 import Feed from "../components/Feed";
+import variants from "../utils/variants";
 
 const Home: NextPage = () => {
   const { colorMode } = useColorMode();
@@ -14,6 +15,11 @@ const Home: NextPage = () => {
         width: "100%",
         backgroundColor: colorMode === "light" ? "#f9f9f9" : "#030303",
       }}
+      variants={variants}
+      initial="hidden"
+      animate="enter"
+      exit="exit"
+      transition={{ type: "linear" }}
     >
       <Head>
         <title>PictureSh</title>
