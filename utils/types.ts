@@ -9,5 +9,16 @@ export type CreateImageType = {
   title: string;
   description: string;
   category: string;
+  // url: string;
+};
+
+export type ImageType = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
   url: string;
+  authorId: string;
+  author: UserType;
+  createdAt: Date;
 };

@@ -7,10 +7,23 @@ import {
   Textarea,
   useColorMode,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { BsFillArrowUpCircleFill } from "react-icons/bs";
+import { uploadImage } from "../redux/actions/imageActions";
+import { CreateImageType } from "../utils/types";
+import { useDispatch } from "react-redux";
 
 const UploadImageComponent = () => {
+  const dispatch = useDispatch();
+  const [data, setData] = useState<CreateImageType>({
+    title: "",
+    description: "",
+    category: "",
+  });
+  const uploadImageBoi = () => {
+    //@ts-ignore
+    dispatch(uploadImage(data));
+  };
   const { colorMode } = useColorMode();
   return (
     <Flex width="100%" justifyContent="center">
@@ -52,19 +65,34 @@ const UploadImageComponent = () => {
             placeholder="Title"
             fontSize="25px"
             size="lg"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setData({ ...data, title: e.target.value });
+            }}
           />
-          <Textarea placeholder="Description" size="lg" height="130px" />
-          <Select placeholder="Select category">
-            <option value="option1">Programming</option>
-            <option value="option2">Music</option>
-            <option value="option3">Gaming</option>
-            <option value="option3">Cats</option>
-            <option value="option3">Coffee</option>
-            <option value="option3">Idk</option>
-            <option value="option3">Shit</option>
-            <option value="option3">Other</option>
+          <Textarea
+            placeholder="Description"
+            size="lg"
+            height="130px"
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              setData({ ...data, description: e.target.value });
+            }}
+          />
+          <Select
+            placeholder="Select category"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setData({ ...data, category: e.target.value });
+            }}
+          >
+            <option value="programming">Programming</option>
+            <option value="music">Music</option>
+            <option value="gaming">Gaming</option>
+            <option value="cats">Cats</option>
+            <option value="coffee">Coffee</option>
+            <option value="idk">Idk</option>
+            <option value="shit">Shit</option>
+            <option value="other">Other</option>
           </Select>
-          <Button colorScheme="blue" rounded="full">
+          <Button colorScheme="blue" rounded="full" onClick={uploadImageBoi}>
             Upload
           </Button>
         </Flex>

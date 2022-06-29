@@ -7,6 +7,8 @@ import Feed from "../components/Feed";
 import variants from "../utils/variants";
 import { getSession, useSession } from "next-auth/react";
 import { UserType } from "../utils/types";
+import { wrapper } from "../redux/store";
+import { getAllImages } from "../redux/actions/imageActions";
 
 const Home: NextPage = () => {
   const { colorMode } = useColorMode();
@@ -38,19 +40,23 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getSession(ctx);
-  if (!session) {
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const session = await getSession(context);
+    await store.dispatch(getAllImages());
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
+      props: {
+        session,
       },
     };
   }
-  return {
-    props: {
-      session,
-    },
-  };
-}
+);

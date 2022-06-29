@@ -7,13 +7,7 @@ export default async function ImageStuff(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getSession({ req });
-  if (!session) {
-    res.status(401).json({
-      error: "Unauthenticated",
-    });
-    return;
-  }
+  // const session = await getSession({ req });
   if (req.method === "GET") {
     try {
       const images = await prisma.image.findMany({
@@ -35,7 +29,7 @@ export default async function ImageStuff(
           category: data.category,
           url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thehistoryhub.com%2Fwp-content%2Fuploads%2F2014%2F08%2FBig-Ben-Night.jpg&f=1&nofb=1",
           //@ts-ignore
-          authorId: session.user.id,
+          authorId: "cl4xyahfs0006fwgh4p12xthg",
         },
         include: {
           author: true,
