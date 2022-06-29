@@ -39,7 +39,7 @@ const Feed = (props: Props) => {
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
-        {images.map((image: ImageType, index) => (
+        {images?.map((image: ImageType, index) => (
           <ImageBoi key={index} image={image} />
         ))}
       </Masonry>

@@ -1,3 +1,4 @@
+import { NextRouter } from "next/router";
 import { Dispatch } from "redux";
 import * as api from "../../utils/api";
 import { CreateImageType } from "../../utils/types";
@@ -21,6 +22,20 @@ export const uploadImage =
       dispatch({
         type: "UPLOAD_IMAGE",
         payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const deleteImage =
+  (imageId: number, router: NextRouter) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.deleteImage(imageId);
+      router.push("/");
+      dispatch({
+        type: "DELETE_IMAGE",
+        payload: imageId,
       });
     } catch (error: any) {
       console.log(error);

@@ -12,8 +12,22 @@ import {
 } from "@chakra-ui/react";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { MdDelete } from "react-icons/md";
+import { deleteImage } from "../redux/actions/imageActions";
+import { ImageType } from "../utils/types";
+import { useRouter } from "next/router";
 
 const ImageDetailsComponent = () => {
+  const dispatch = useDispatch();
+  const image: ImageType = useSelector(
+    (state: any) => state.singleimage.imageData
+  );
+  const router = useRouter();
+  const imageDeleteBoi = () => {
+    //@ts-ignore
+    dispatch(deleteImage(image.id, router));
+  };
   const { colorMode } = useColorMode();
   return (
     <Flex width="100%" justifyContent="center">
@@ -32,7 +46,7 @@ const ImageDetailsComponent = () => {
           boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
         >
           <img
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.guim.co.uk%2Fimg%2Fmedia%2F763573fcc896f41309f7debe3db8ca43894b0ccb%2F1899_0_2613_1568%2Fmaster%2F2613.jpg%3Fwidth%3D445%26quality%3D45%26auto%3Dformat%26fit%3Dmax%26dpr%3D2%26s%3D33b9437f5164c2a1732a5527b7778247&f=1&nofb=1"
+            src={image?.url}
             alt=""
             style={{
               width: "400px",
@@ -71,28 +85,19 @@ const ImageDetailsComponent = () => {
                   rounded="full"
                 />
                 <IconButton
-                  icon={<FiMoreHorizontal size={20} />}
-                  aria-label="More"
+                  icon={<MdDelete size={20} />}
+                  aria-label="Delete"
                   rounded="full"
+                  colorScheme="red"
+                  onClick={imageDeleteBoi}
                 />
               </Flex>
               <Button rounded="full" variant="solid" colorScheme="blue">
                 Save
               </Button>
             </Flex>
-            <Heading fontSize="25px">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque
-              perferendis itaque harum iste sequi voluptas asperiores
-            </Heading>
-            <Text fontSize="16px">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero odit
-              sed culpa expedita, ipsum quo unde voluptates atque soluta ipsa
-              vel dicta laborum rem possimus hic? Dolorum, ut dolore! Cum?Lorem,
-              ipsum dolor sit amet consectetur adipisicing elit. Veniam suscipit
-              obcaecati facere repellendus, hic ipsum? Omnis facilis animi
-              suscipit quaerat aut, ab rerum magni deserunt cumque incidunt,
-              eligendi, aspernatur repudiandae?
-            </Text>
+            <Heading fontSize="25px">{image?.title}</Heading>
+            <Text fontSize="16px">{image?.description}</Text>
             <Flex
               alignItems="center"
               justifyContent="space-between"

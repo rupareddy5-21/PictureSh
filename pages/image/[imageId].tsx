@@ -8,6 +8,8 @@ import variants from "../../utils/variants";
 import { GetServerSidePropsContext } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { UserType } from "../../utils/types";
+import { wrapper } from "../../redux/store";
+import { getSingleImage } from "../../redux/actions/singleImageActions";
 
 const ImageDetails = () => {
   const { colorMode } = useColorMode();
@@ -37,19 +39,25 @@ const ImageDetails = () => {
 };
 
 export default ImageDetails;
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getSession(ctx);
-  if (!session) {
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    await store.dispatch(
+      getSingleImage(parseInt(context.query.imageId as string))
+    );
+    const session = await getSession(context);
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
+      props: {
+        session,
       },
     };
   }
-  return {
-    props: {
-      session,
-    },
-  };
-}
+);
