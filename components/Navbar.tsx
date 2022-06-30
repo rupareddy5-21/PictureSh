@@ -27,6 +27,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
 import { logout } from "../utils/functions";
+import { UserType } from "../utils/types";
 
 type Props = {
   isProfile?: boolean;
@@ -35,6 +36,7 @@ type Props = {
   isSavedImages?: boolean;
   isUploadImage?: boolean;
   isSingleImage?: boolean;
+  user?: UserType;
 };
 
 const Navbar = (props: Props) => {
@@ -138,16 +140,18 @@ const Navbar = (props: Props) => {
         <Menu>
           <MenuButton>
             <Avatar
-              name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
+              name={props.user?.name}
+              src={props.user?.image}
               cursor="pointer"
             />
           </MenuButton>
-          <MenuList>
+          <MenuList
+            backgroundColor={colorMode === "light" ? "#FFFFFF" : "#1a1a1a"}
+          >
             <MenuItem
               icon={<FaUserCircle size={18} />}
               onClick={() => {
-                router.push("/user/idiotboi");
+                router.push(`/user/${props.user?.id}`);
               }}
             >
               Your profile

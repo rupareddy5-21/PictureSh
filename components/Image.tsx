@@ -5,9 +5,10 @@ import { RiArrowRightUpLine } from "react-icons/ri";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
+import { ImageType } from "../utils/types";
 
 type Props = {
-  src?: string;
+  image: ImageType;
 };
 
 const Image = (props: Props) => {
@@ -22,16 +23,12 @@ const Image = (props: Props) => {
       onMouseEnter={() => setImageHovered(true)}
       onMouseLeave={() => setImageHovered(false)}
       onClick={() => {
-        router.push("/image/fsfsa");
+        router.push(`/image/${props.image?.id}`);
       }}
     >
       <img
         className="imgboi"
-        src={
-          props.src
-            ? props.src
-            : "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thehistoryhub.com%2Fwp-content%2Fuploads%2F2014%2F08%2FBig-Ben-Night.jpg&f=1&nofb=1"
-        }
+        src={props.image?.url}
         alt=""
         style={{
           width: "100%",
@@ -84,7 +81,7 @@ const Image = (props: Props) => {
             >
               <RiArrowRightUpLine color="white" />
               <Heading color="white" fontSize="md" fontWeight="bold">
-                idiotboi
+                {props.image?.author?.name}
               </Heading>
             </Flex>
             <Flex alignItems="center" gap="9px" marginRight="4px">

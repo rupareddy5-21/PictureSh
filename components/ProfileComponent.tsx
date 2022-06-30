@@ -1,8 +1,15 @@
 import { Avatar, Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { FiShare } from "react-icons/fi";
+import { UserType } from "../utils/types";
+import { useSelector } from "react-redux";
 
-const ProfileComponent = () => {
+type Props = {
+  currentUser: UserType;
+};
+
+const ProfileComponent = (props: Props) => {
+  const user = useSelector((state: any) => state.user.authData);
   return (
     <Flex
       width="100%"
@@ -18,17 +25,14 @@ const ProfileComponent = () => {
         width="40%"
       >
         <Avatar
-          name="Dan Abrahmov"
-          src="https://bit.ly/dan-abramov"
+          name={user?.name}
+          src={user?.image}
           cursor="pointer"
           size="xl"
         />
-        <Heading fontSize="3xl">IdiotBoi</Heading>
+        <Heading fontSize="3xl">{user?.name}</Heading>
         <Heading fontSize="16px" fontWeight="normal" color="gray.600">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio autem
-          voluptatibus vero sequi eligendi aspernatur, quam doloremque
-          blanditiis amet dignissimos commodi omnis asperiores provident eos?
-          Dolorem natus qui sint corporis.
+          I love PictureSh and your mom :)
         </Heading>
         <Flex justifyContent="space-evenly" alignItems="center" width="100%">
           <Flex flexDirection="column" gap="8px" alignItems="center">
@@ -61,14 +65,25 @@ const ProfileComponent = () => {
             size="lg"
             colorScheme="blue"
           />
-          <Button
-            borderRadius="full"
-            size="lg"
-            variant="solid"
-            colorScheme="blue"
-          >
-            Follow
-          </Button>
+          {user?.id === props.currentUser?.id ? (
+            <Button
+              borderRadius="full"
+              size="lg"
+              variant="solid"
+              colorScheme="blue"
+            >
+              Upload
+            </Button>
+          ) : (
+            <Button
+              borderRadius="full"
+              size="lg"
+              variant="solid"
+              colorScheme="blue"
+            >
+              Follow
+            </Button>
+          )}
         </Flex>
       </Flex>
     </Flex>
