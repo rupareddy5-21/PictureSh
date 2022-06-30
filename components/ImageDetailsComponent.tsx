@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -18,6 +18,8 @@ import { deleteImage } from "../redux/actions/imageActions";
 import { ImageType } from "../utils/types";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { format } from "timeago.js";
+import { addComment } from "../redux/actions/singleImageActions";
 
 type Props = {
   cookie: string;
@@ -35,6 +37,12 @@ const ImageDetailsComponent = (props: Props) => {
   };
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
+  const [comment, setComment] = useState("");
+  const addCommentBoi = () => {
+    //@ts-ignore
+    dispatch(addComment(comment, props.cookie, image.id));
+    setComment("");
+  };
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -113,9 +121,13 @@ const ImageDetailsComponent = (props: Props) => {
               width="100%"
             >
               <Flex alignItems="center" gap="9px">
-                <Avatar name="sdfsf" cursor="pointer" />
+                <Avatar
+                  name={image?.author?.name}
+                  src={image?.author?.image}
+                  cursor="pointer"
+                />
                 <Flex flexDirection="column" gap="2px">
-                  <Heading fontSize="20px">Idiotboi</Heading>
+                  <Heading fontSize="20px">{image?.author?.name}</Heading>
                   <Text fontSize="12px" fontWeight="normal">
                     28 followers
                   </Text>
@@ -134,43 +146,67 @@ const ImageDetailsComponent = (props: Props) => {
           flexDirection="column"
           width="100%"
         >
-          <Heading fontSize="22px">20 Comments</Heading>
+          <Heading fontSize="22px">
+            {image?.comments?.length === 0
+              ? "No comments"
+              : image?.comments?.length === 1
+              ? `${image?.comments?.length} Comment`
+              : `${image?.comments?.length} Comments`}
+          </Heading>
           <Flex width="100%" alignItems="center" gap="1rem">
-            <Avatar name="fdsafds" />
+            <Avatar
+              name={session?.user?.name as string}
+              src={session?.user?.image as string}
+            />
             <Input
               variant="outline"
               placeholder="Add a comment"
               rounded="full"
               size="lg"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setComment(event.target.value);
+              }}
+              onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                if (event.key === "Enter") {
+                  addCommentBoi();
+                }
+              }}
             />
           </Flex>
           <Flex flexDirection="column" width="100%" gap="2rem">
-            <Flex width="100%" alignItems="start" gap="12px">
-              <Avatar name="sdfsdf" cursor="pointer" />
-              <Flex flexDirection="column" alignItems="start" gap="6px">
-                <Flex alignItems="center" gap="10px">
-                  <Heading
-                    fontSize="17px"
-                    fontWeight="semibold"
-                    _hover={{
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    Idiotboi
-                  </Heading>
-                  <Heading fontSize="15px" color="gray.600" fontWeight="medium">
-                    20 minutes ago
-                  </Heading>
+            {image?.comments?.map((comment, index) => (
+              <Flex width="100%" alignItems="start" gap="12px" key={index}>
+                <Avatar
+                  name={comment?.user?.name}
+                  src={comment?.user?.image}
+                  cursor="pointer"
+                />
+                <Flex flexDirection="column" alignItems="start" gap="6px">
+                  <Flex alignItems="center" gap="10px">
+                    <Heading
+                      fontSize="17px"
+                      fontWeight="semibold"
+                      _hover={{
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {comment?.user?.name}
+                    </Heading>
+                    <Heading
+                      fontSize="15px"
+                      color="gray.600"
+                      fontWeight="medium"
+                    >
+                      {format(comment?.createdAt)}
+                    </Heading>
+                  </Flex>
+                  <Text fontSize="15px" color="gray.600" lineHeight="20px">
+                    {comment?.comment}
+                  </Text>
                 </Flex>
-                <Text fontSize="15px" color="gray.600" lineHeight="20px">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Perferendis accusantium neque unde distinctio commodi a, rem
-                  repellendus deserunt explicabo in fugiat corporis natus optio
-                  rerum quaerat quod? Sequi, culpa iste.
-                </Text>
               </Flex>
-            </Flex>
+            ))}
           </Flex>
         </Flex>
       </Flex>
