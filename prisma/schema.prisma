@@ -47,6 +47,7 @@ model User {
   sessions      Session[]
   images        Image[]
   comments      Comment[]
+  likes         Like[]
 
   @@map("users")
 }
@@ -70,6 +71,7 @@ model Image {
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
   comments    Comment[]
+  likes       Like[]
 
   @@map("images")
 }
@@ -84,4 +86,14 @@ model Comment {
   createdAt DateTime @default(now())
 
   @@map("comments")
+}
+
+model Like {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId Int
+
+  @@map("likes")
 }
