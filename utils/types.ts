@@ -23,6 +23,7 @@ export type ImageType = {
   author: UserType;
   comments: CommentType[];
   createdAt: Date;
+  likes: LikeType[];
 };
 
 export type CommentType = {
@@ -36,3 +37,9 @@ export type CommentType = {
 export type CreateCommentType = {
   comment: string;
 };
+
+export type LikeType = {
+  id: number;
+  userId: string;
+  imageId: number;
+}

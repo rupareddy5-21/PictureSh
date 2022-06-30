@@ -55,3 +55,14 @@ export const addComment = (
       },
     }
   );
+
+export const likeImage = (imageId: number, cookie: string) =>
+  API.put(
+    `/api/image/${imageId}/like`,
+    {},
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );

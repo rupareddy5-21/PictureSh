@@ -41,6 +41,7 @@ export default async function handler(
             id: parseInt(imageId as string),
           },
           include: {
+            likes: true,
             comments: {
               include: { user: true },
               orderBy: {
