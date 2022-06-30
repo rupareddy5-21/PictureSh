@@ -11,7 +11,11 @@ import { UserType } from "../../utils/types";
 import { wrapper } from "../../redux/store";
 import { getSingleImage } from "../../redux/actions/singleImageActions";
 
-const ImageDetails = () => {
+type Props = {
+  cookie: string;
+};
+
+const ImageDetails = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   return (
@@ -33,7 +37,7 @@ const ImageDetails = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar isSingleImage={true} user={session?.user as UserType} />
-      <ImageDetailsComponent />
+      <ImageDetailsComponent cookie={props.cookie} />
     </motion.div>
   );
 };
@@ -42,8 +46,9 @@ export default ImageDetails;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
+    const cookie = context?.req?.cookies["next-auth.session-token"];
     await store.dispatch(
-      getSingleImage(parseInt(context.query.imageId as string))
+      getSingleImage(parseInt(context.query.imageId as string), cookie)
     );
     const session = await getSession(context);
     if (!session) {
@@ -57,6 +62,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     return {
       props: {
         session,
+        cookie,
       },
     };
   }

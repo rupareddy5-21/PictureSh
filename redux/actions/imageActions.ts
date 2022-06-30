@@ -3,9 +3,9 @@ import { Dispatch } from "redux";
 import * as api from "../../utils/api";
 import { CreateImageType } from "../../utils/types";
 
-export const getAllImages = () => async (dispatch: Dispatch) => {
+export const getAllImages = (cookie: string) => async (dispatch: Dispatch) => {
   try {
-    const { data } = await api.getAllImages();
+    const { data } = await api.getAllImages(cookie);
     dispatch({
       type: "GET_ALLIMAGES",
       payload: data,
@@ -16,9 +16,11 @@ export const getAllImages = () => async (dispatch: Dispatch) => {
 };
 
 export const uploadImage =
-  (databoi: CreateImageType) => async (dispatch: Dispatch) => {
+  (databoi: CreateImageType, cookie: string, router: NextRouter) =>
+  async (dispatch: Dispatch) => {
     try {
-      const { data } = await api.uploadImage(databoi);
+      const { data } = await api.uploadImage(databoi, cookie);
+      router.push("/");
       dispatch({
         type: "UPLOAD_IMAGE",
         payload: data,
@@ -29,9 +31,10 @@ export const uploadImage =
   };
 
 export const deleteImage =
-  (imageId: number, router: NextRouter) => async (dispatch: Dispatch) => {
+  (imageId: number, router: NextRouter, cookie: string) =>
+  async (dispatch: Dispatch) => {
     try {
-      const { data } = await api.deleteImage(imageId);
+      const { data } = await api.deleteImage(imageId, cookie);
       router.push("/");
       dispatch({
         type: "DELETE_IMAGE",

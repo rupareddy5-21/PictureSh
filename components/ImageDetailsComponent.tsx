@@ -17,8 +17,13 @@ import { MdDelete } from "react-icons/md";
 import { deleteImage } from "../redux/actions/imageActions";
 import { ImageType } from "../utils/types";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-const ImageDetailsComponent = () => {
+type Props = {
+  cookie: string;
+};
+
+const ImageDetailsComponent = (props: Props) => {
   const dispatch = useDispatch();
   const image: ImageType = useSelector(
     (state: any) => state.singleimage.imageData
@@ -26,9 +31,10 @@ const ImageDetailsComponent = () => {
   const router = useRouter();
   const imageDeleteBoi = () => {
     //@ts-ignore
-    dispatch(deleteImage(image.id, router));
+    dispatch(deleteImage(image.id, router, props.cookie));
   };
   const { colorMode } = useColorMode();
+  const { data: session } = useSession();
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -84,13 +90,16 @@ const ImageDetailsComponent = () => {
                   aria-label="Share"
                   rounded="full"
                 />
-                <IconButton
-                  icon={<MdDelete size={20} />}
-                  aria-label="Delete"
-                  rounded="full"
-                  colorScheme="red"
-                  onClick={imageDeleteBoi}
-                />
+                {/* @ts-ignore */}
+                {image?.authorId === session?.user?.id ? (
+                  <IconButton
+                    icon={<MdDelete size={20} />}
+                    aria-label="Delete"
+                    rounded="full"
+                    colorScheme="red"
+                    onClick={imageDeleteBoi}
+                  />
+                ) : null}
               </Flex>
               <Button rounded="full" variant="solid" colorScheme="blue">
                 Save

@@ -12,17 +12,23 @@ import { BsFillArrowUpCircleFill } from "react-icons/bs";
 import { uploadImage } from "../redux/actions/imageActions";
 import { CreateImageType } from "../utils/types";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
-const UploadImageComponent = () => {
+type Props = {
+  cookie: string;
+};
+
+const UploadImageComponent = (props: Props) => {
   const dispatch = useDispatch();
   const [data, setData] = useState<CreateImageType>({
     title: "",
     description: "",
     category: "",
   });
+  const router = useRouter();
   const uploadImageBoi = () => {
     //@ts-ignore
-    dispatch(uploadImage(data));
+    dispatch(uploadImage(data, props.cookie, router));
   };
   const { colorMode } = useColorMode();
   return (

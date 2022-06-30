@@ -9,7 +9,11 @@ import { getSession, useSession } from "next-auth/react";
 import { GetServerSidePropsContext } from "next";
 import { UserType } from "../utils/types";
 
-const Upload = () => {
+type Props = {
+  cookie: string;
+};
+
+const Upload = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   return (
@@ -31,7 +35,7 @@ const Upload = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar isUploadImage={true} user={session?.user as UserType} />
-      <UploadImageComponent />
+      <UploadImageComponent cookie={props.cookie} />
     </motion.div>
   );
 };
@@ -47,9 +51,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       },
     };
   }
+  const cookie = ctx.req?.cookies["next-auth.session-token"];
   return {
     props: {
       session,
+      cookie,
     },
   };
 }

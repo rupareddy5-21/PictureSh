@@ -2,12 +2,19 @@ import prisma from "../../../utils/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { CreateImageType, UserType } from "../../../utils/types";
+import { authOptions } from "../auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth";
 
 export default async function ImageStuff(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // const session = await getSession({ req });
+  const session = await getSession({ req });
+  // const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session) {
+    res.status(401).json({ error: "Unauthorised" });
+    return;
+  }
   if (req.method === "GET") {
     try {
       const images = await prisma.image.findMany({
@@ -29,7 +36,7 @@ export default async function ImageStuff(
           category: data.category,
           url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thehistoryhub.com%2Fwp-content%2Fuploads%2F2014%2F08%2FBig-Ben-Night.jpg&f=1&nofb=1",
           //@ts-ignore
-          authorId: "cl4xyahfs0006fwgh4p12xthg",
+          authorId: session.user.id,
         },
         include: {
           author: true,
