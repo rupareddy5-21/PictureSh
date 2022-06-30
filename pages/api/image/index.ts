@@ -2,15 +2,12 @@ import prisma from "../../../utils/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { CreateImageType, UserType } from "../../../utils/types";
-import { authOptions } from "../auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth";
 
-export default async function ImageStuff(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const session = await getSession({ req });
-  // const session = await unstable_getServerSession(req, res, authOptions);
   if (!session) {
     res.status(401).json({ error: "Unauthorised" });
     return;

@@ -1,7 +1,7 @@
 import React from "react";
 import Masonry from "react-masonry-css";
 import { useSelector } from "react-redux";
-import { ImageType } from "../utils/types";
+import { ImageType, UserType } from "../utils/types";
 import ImageBoi from "./Image";
 
 type Props = {
@@ -14,6 +14,12 @@ type Props = {
 const Feed = (props: Props) => {
   const images: ImageType[] = useSelector(
     (state: any) => state.image.imageData
+  );
+  const profileimages: UserType = useSelector(
+    (state: any) => state.user.authData
+  );
+  const yourimages: ImageType[] = useSelector(
+    (state: any) => state.yourimage.imageData
   );
   const breakPoints = {
     default: 4,
@@ -39,9 +45,17 @@ const Feed = (props: Props) => {
         className="my-masonry-grid"
         columnClassName="my-masonry-grid_column"
       >
-        {images?.map((image: ImageType, index) => (
-          <ImageBoi key={index} image={image} />
-        ))}
+        {props.isProfile
+          ? profileimages?.images?.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))
+          : props.isYourImages
+          ? yourimages.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))
+          : images?.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))}
       </Masonry>
     </div>
   );

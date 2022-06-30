@@ -31,3 +31,10 @@ export const deleteImage = (imageId: number, cookie: string) =>
       Cookie: `next-auth.session-token=${cookie}`,
     },
   });
+
+export const getYourImages = (cookie: string) =>
+  API.get(`/api/image/yourimages`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });

@@ -134,7 +134,13 @@ const Navbar = (props: Props) => {
             </Tooltip>
           )}
           <Tooltip label="Upload image" openDelay={200}>
-            <IconButton aria-label="Upload image" icon={<MdAddAPhoto />} />
+            <IconButton
+              aria-label="Upload image"
+              icon={<MdAddAPhoto />}
+              onClick={() => {
+                router.push("/upload");
+              }}
+            />
           </Tooltip>
         </Flex>
         <Menu>

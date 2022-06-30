@@ -10,6 +10,7 @@ import { getSession, useSession } from "next-auth/react";
 import { UserType } from "../../utils/types";
 import { wrapper } from "../../redux/store";
 import { getSingleImage } from "../../redux/actions/singleImageActions";
+import * as api from "../../utils/api";
 
 type Props = {
   cookie: string;
@@ -57,6 +58,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
           destination: "/login",
           permanent: false,
         },
+      };
+    }
+    const { data } = await api.getSingleImage(
+      parseInt(context.query.imageId as string),
+      cookie
+    );
+    if (data === null) {
+      return {
+        notFound: true,
       };
     }
     return {

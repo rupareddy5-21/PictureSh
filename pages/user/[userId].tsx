@@ -50,6 +50,7 @@ const UserProfile = () => {
         >
           Userboi images
         </Heading>
+        {}
         <Feed isProfile={true} />
       </Flex>
     </motion.div>
@@ -74,9 +75,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (data === null) {
       return {
         notFound: true,
-        props: {
-          session,
-        },
       };
     }
     return {

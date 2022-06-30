@@ -3,6 +3,7 @@ export type UserType = {
   image: string;
   id: string;
   name: string;
+  images: ImageType[];
 };
 
 export type CreateImageType = {
