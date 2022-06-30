@@ -1,8 +1,8 @@
-import prisma from "../../../utils/prisma";
+import prisma from "../../../../utils/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
-export default async function ImageStuff(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -21,6 +21,12 @@ export default async function ImageStuff(
           id: parseInt(imageId as string),
         },
         include: {
+          comments: {
+            include: { user: true },
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
           author: true,
         },
       });

@@ -7,6 +7,8 @@ import Feed from "../components/Feed";
 import variants from "../utils/variants";
 import { getSession, useSession } from "next-auth/react";
 import { UserType } from "../utils/types";
+import { wrapper } from "../redux/store";
+import { getYourImages } from "../redux/actions/yourImageActions";
 
 const YourImages = () => {
   const { colorMode } = useColorMode();
@@ -51,19 +53,23 @@ const YourImages = () => {
 };
 
 export default YourImages;
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getSession(ctx);
-  if (!session) {
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (context: GetServerSidePropsContext) => {
+    const session = await getSession(context);
+    const cookie = context?.req?.cookies["next-auth.session-token"];
+    await store.dispatch(getYourImages(cookie));
+    if (!session) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
+      props: {
+        session,
       },
     };
   }
-  return {
-    props: {
-      session,
-    },
-  };
-}
+);

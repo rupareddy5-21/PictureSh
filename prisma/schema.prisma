@@ -46,6 +46,7 @@ model User {
   createdAt     DateTime  @default(now())
   sessions      Session[]
   images        Image[]
+  comments      Comment[]
 
   @@map("users")
 }
@@ -60,14 +61,27 @@ model VerificationToken {
 }
 
 model Image {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(50)
-  description String?  @db.VarChar(255)
-  category    String   @db.VarChar(50)
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(50)
+  description String?   @db.VarChar(255)
+  category    String    @db.VarChar(50)
   url         String
-  createdAt   DateTime @default(now())
-  author      User     @relation(fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
+  comments    Comment[]
 
   @@map("images")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId   Int
+  comment   String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  @@map("comments")
 }

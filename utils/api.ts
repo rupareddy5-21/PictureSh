@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateImageType } from "./types";
+import { CreateCommentType, CreateImageType } from "./types";
 
 const API = axios.create({
   baseURL: "http://127.0.0.1:3000/",
@@ -31,3 +31,27 @@ export const deleteImage = (imageId: number, cookie: string) =>
       Cookie: `next-auth.session-token=${cookie}`,
     },
   });
+
+export const getYourImages = (cookie: string) =>
+  API.get(`/api/image/yourimages`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
+
+export const addComment = (
+  data: CreateCommentType,
+  cookie: string,
+  imageId: number
+) =>
+  API.post(
+    `/api/image/${imageId}/comment`,
+    {
+      comment: data,
+    },
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );

@@ -3,6 +3,7 @@ export type UserType = {
   image: string;
   id: string;
   name: string;
+  images: ImageType[];
 };
 
 export type CreateImageType = {
@@ -20,5 +21,18 @@ export type ImageType = {
   url: string;
   authorId: string;
   author: UserType;
+  comments: CommentType[];
   createdAt: Date;
+};
+
+export type CommentType = {
+  id: number;
+  comment: string;
+  user: UserType;
+  image: ImageType;
+  createdAt: Date;
+};
+
+export type CreateCommentType = {
+  comment: string;
 };
