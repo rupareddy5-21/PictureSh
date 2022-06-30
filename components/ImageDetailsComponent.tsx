@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   Avatar,
   Button,
+  Divider,
   Flex,
   Heading,
   IconButton,
@@ -20,6 +21,26 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { format } from "timeago.js";
 import { addComment } from "../redux/actions/singleImageActions";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from "@chakra-ui/react";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  RedditIcon,
+  RedditShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+} from "react-share";
+import { IoIosCopy } from "react-icons/io";
 
 type Props = {
   cookie: string;
@@ -33,16 +54,17 @@ const ImageDetailsComponent = (props: Props) => {
   const router = useRouter();
   const imageDeleteBoi = () => {
     //@ts-ignore
-    dispatch(deleteImage(image.id, router, props.cookie));
+    dispatch(deleteImage(image?.id, router, props.cookie));
   };
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const addCommentBoi = () => {
     //@ts-ignore
-    dispatch(addComment(comment, props.cookie, image.id));
+    dispatch(addComment(comment, props.cookie, image?.id));
     setComment("");
   };
+  const SHARE_URL = `http://127.0.0.1:3000/image/${image?.id}`;
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -93,11 +115,130 @@ const ImageDetailsComponent = (props: Props) => {
                   aria-label="Download"
                   rounded="full"
                 />
-                <IconButton
-                  icon={<FiShare size={20} />}
-                  aria-label="Share"
-                  rounded="full"
-                />
+                <Popover>
+                  <PopoverTrigger>
+                    <IconButton
+                      icon={<FiShare size={20} />}
+                      aria-label="Share"
+                      rounded="full"
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    backgroundColor={
+                      colorMode === "dark" ? "#1a1a1a" : "#ffffff"
+                    }
+                  >
+                    <PopoverArrow
+                      backgroundColor={
+                        colorMode === "dark" ? "#1a1a1a" : "#ffffff"
+                      }
+                    />
+                    <PopoverCloseButton />
+                    <PopoverHeader>Share image!</PopoverHeader>
+                    <PopoverBody>
+                      <Flex
+                        width="100%"
+                        gap="10px"
+                        alignItems="center"
+                        cursor="pointer"
+                        paddingBottom="8px"
+                      >
+                        <IoIosCopy
+                          size="24px"
+                          style={{
+                            marginLeft: "4px",
+                          }}
+                        />
+                        <Text
+                          fontSize="md"
+                          fontWeight="semibold"
+                          position="absolute"
+                          left="60px"
+                        >
+                          Copy to clipboard
+                        </Text>
+                      </Flex>
+                      <Divider />
+                      <Flex
+                        width="100%"
+                        gap="10px"
+                        alignItems="center"
+                        cursor="pointer"
+                        paddingBottom="5px"
+                        paddingTop="5px"
+                      >
+                        <RedditShareButton
+                          url={SHARE_URL}
+                          style={{
+                            width: "100%",
+                          }}
+                        >
+                          <RedditIcon size={32} round />
+                        </RedditShareButton>
+                        <Text
+                          fontSize="md"
+                          fontWeight="semibold"
+                          position="absolute"
+                          left="60px"
+                        >
+                          Reddit
+                        </Text>
+                      </Flex>
+                      <Divider />
+                      <Flex
+                        width="100%"
+                        gap="10px"
+                        alignItems="center"
+                        cursor="pointer"
+                        paddingBottom="5px"
+                        paddingTop="5px"
+                      >
+                        <FacebookShareButton
+                          url={SHARE_URL}
+                          style={{
+                            width: "100%",
+                          }}
+                        >
+                          <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+                        <Text
+                          fontSize="md"
+                          fontWeight="semibold"
+                          position="absolute"
+                          left="60px"
+                        >
+                          Facebook
+                        </Text>
+                      </Flex>
+                      <Divider />
+                      <Flex
+                        width="100%"
+                        gap="10px"
+                        alignItems="center"
+                        cursor="pointer"
+                        paddingBottom="5px"
+                        paddingTop="5px"
+                      >
+                        <TwitterShareButton
+                          url={SHARE_URL}
+                          style={{
+                            width: "100%",
+                          }}
+                        >
+                          <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+                        <Text
+                          fontSize="md"
+                          fontWeight="semibold"
+                          position="absolute"
+                          left="60px"
+                        >
+                          Twitter
+                        </Text>
+                      </Flex>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
                 {/* @ts-ignore */}
                 {image?.authorId === session?.user?.id ? (
                   <IconButton
