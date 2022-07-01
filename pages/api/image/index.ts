@@ -31,7 +31,7 @@ export default async function handler(
           title: data.title,
           description: data.description,
           category: data.category,
-          url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.thehistoryhub.com%2Fwp-content%2Fuploads%2F2014%2F08%2FBig-Ben-Night.jpg&f=1&nofb=1",
+          url: data.url,
           //@ts-ignore
           authorId: session.user.id,
         },
