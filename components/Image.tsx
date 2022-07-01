@@ -2,7 +2,7 @@
 import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiArrowRightUpLine } from "react-icons/ri";
-import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
+import { FiDownload } from "react-icons/fi";
 import { IoHeartOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { ImageType } from "../utils/types";

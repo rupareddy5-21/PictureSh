@@ -4,12 +4,14 @@ import Head from "next/head";
 import React from "react";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
-import { UserType } from "../utils/types";
+import { ImageType, UserType } from "../utils/types";
 import Feed from "../components/Feed";
 import variants from "../utils/variants";
 import { GetServerSidePropsContext } from "next";
 import { wrapper } from "../redux/store";
 import { getCategoryImages } from "../redux/actions/categoryImageAction";
+import { useSelector } from "react-redux";
+import NotFoundImage from "../components/NotFoundImage";
 
 type Props = {
   category: string;
@@ -18,6 +20,9 @@ type Props = {
 const Tag = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
+  const categoryimages: ImageType[] = useSelector(
+    (state: any) => state.categoryimage.imageData
+  );
   return (
     <motion.div
       style={{
@@ -46,7 +51,11 @@ const Tag = (props: Props) => {
         >
           Category - {props.category}
         </Heading>
-        <Feed isTagImage={true} />
+        {categoryimages?.length === 0 ? (
+          <NotFoundImage title="There are no images of this category. Go upload some images of this category idiot :)" />
+        ) : (
+          <Feed isTagImage={true} />
+        )}
       </Flex>
     </motion.div>
   );

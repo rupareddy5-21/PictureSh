@@ -6,13 +6,18 @@ import { Flex, Heading, useColorMode } from "@chakra-ui/react";
 import Feed from "../components/Feed";
 import variants from "../utils/variants";
 import { getSession, useSession } from "next-auth/react";
-import { UserType } from "../utils/types";
+import { ImageType, UserType } from "../utils/types";
 import { wrapper } from "../redux/store";
 import { getYourImages } from "../redux/actions/yourImageActions";
+import { useSelector } from "react-redux";
+import NotFoundImage from "../components/NotFoundImage";
 
 const YourImages = () => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
+  const yourimages: ImageType[] = useSelector(
+    (state: any) => state.yourimage.imageData
+  );
   return (
     <motion.div
       variants={variants}
@@ -41,7 +46,11 @@ const YourImages = () => {
         >
           Your images
         </Heading>
-        <Feed isYourImages={true} />
+        {yourimages?.length === 0 ? (
+          <NotFoundImage title="You don't have any images. Go upload some images idiot :)" />
+        ) : (
+          <Feed isYourImages={true} />
+        )}
       </Flex>
     </motion.div>
   );

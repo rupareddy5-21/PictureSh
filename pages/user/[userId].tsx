@@ -12,6 +12,8 @@ import { UserType } from "../../utils/types";
 import { wrapper } from "../../redux/store";
 import * as api from "../../utils/api";
 import { getUsers } from "../../redux/actions/userActions";
+import { useSelector } from "react-redux";
+import NotFoundImage from "../../components/NotFoundImage";
 
 type Props = {
   cookie: string;
@@ -20,6 +22,9 @@ type Props = {
 const UserProfile = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
+  const profileimages: UserType = useSelector(
+    (state: any) => state.user.authData
+  );
   return (
     <motion.div
       style={{
@@ -57,7 +62,11 @@ const UserProfile = (props: Props) => {
         >
           Userboi images
         </Heading>
-        <Feed isProfile={true} />
+        {profileimages?.images?.length === 0 ? (
+          <NotFoundImage title="Seems like this idiot has no images" />
+        ) : (
+          <Feed isProfile={true} />
+        )}
       </Flex>
     </motion.div>
   );

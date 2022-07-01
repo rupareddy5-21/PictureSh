@@ -16,10 +16,16 @@ export const getAllImages = (cookie: string) => async (dispatch: Dispatch) => {
 };
 
 export const uploadImage =
-  (databoi: CreateImageType, cookie: string, router: NextRouter) =>
+  (
+    databoi: CreateImageType,
+    cookie: string,
+    router: NextRouter,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  ) =>
   async (dispatch: Dispatch) => {
     try {
       const { data } = await api.uploadImage(databoi, cookie);
+      setLoading(false);
       router.push("/");
       dispatch({
         type: "UPLOAD_IMAGE",

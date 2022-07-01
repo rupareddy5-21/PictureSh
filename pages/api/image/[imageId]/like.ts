@@ -43,7 +43,6 @@ export default async function handler(
             id: parseInt(imageId as string),
           },
           include: {
-            saves: true,
             likes: true,
             comments: {
               include: { user: true },
@@ -51,7 +50,13 @@ export default async function handler(
                 createdAt: "desc",
               },
             },
-            author: true,
+            author: {
+              include: {
+                followers: true,
+                following: true,
+              },
+            },
+            saves: true,
           },
         });
         res.status(200).json(image);
@@ -66,7 +71,6 @@ export default async function handler(
             id: parseInt(imageId as string),
           },
           include: {
-            saves: true,
             likes: true,
             comments: {
               include: { user: true },
@@ -74,7 +78,13 @@ export default async function handler(
                 createdAt: "desc",
               },
             },
-            author: true,
+            author: {
+              include: {
+                followers: true,
+                following: true,
+              },
+            },
+            saves: true,
           },
         });
         res.status(200).json(image);

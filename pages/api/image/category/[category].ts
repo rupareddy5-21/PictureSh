@@ -20,6 +20,9 @@ export default async function handler(
             equals: category as string,
           },
         },
+        include: {
+          author: true,
+        },
       });
       res.status(200).json(images);
     } catch (error: any) {

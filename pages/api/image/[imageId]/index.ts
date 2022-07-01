@@ -31,7 +31,7 @@ export default async function handler(
           author: {
             include: {
               followers: true,
-              following:true
+              following: true,
             },
           },
           saves: true,

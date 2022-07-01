@@ -10,12 +10,13 @@ import { ImageType, UserType } from "../utils/types";
 import { wrapper } from "../redux/store";
 import { getsearchImages } from "../redux/actions/searchImageActions";
 import { useSelector } from "react-redux";
+import NotFoundImage from "../components/NotFoundImage";
 
 const Search = () => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
-  const categoryimages: ImageType[] = useSelector(
-    (state: any) => state.categoryimage.imageData
+  const searchimages: ImageType[] = useSelector(
+    (state: any) => state.searchimage.imageData
   );
   return (
     <motion.div
@@ -45,7 +46,11 @@ const Search = () => {
         >
           Search results
         </Heading>
-        {categoryimages?.length === 0 ? null : <Feed isSearch={true} />}
+        {searchimages?.length === 0 ? (
+          <NotFoundImage title="No search results found" />
+        ) : (
+          <Feed isSearch={true} />
+        )}
       </Flex>
     </motion.div>
   );

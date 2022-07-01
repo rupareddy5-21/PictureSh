@@ -48,6 +48,7 @@ import {
 } from "react-share";
 import { IoIosCopy } from "react-icons/io";
 import { toast } from "react-toastify";
+import DeleteImageModal from "./DeleteImageModal";
 
 type Props = {
   cookie: string;
@@ -59,17 +60,13 @@ const ImageDetailsComponent = (props: Props) => {
     (state: any) => state?.singleimage?.imageData
   );
   const router = useRouter();
-  const imageDeleteBoi = () => {
-    //@ts-ignore
-    dispatch(deleteImage(image?.id, router, props.cookie));
-  };
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const addCommentBoi = () => {
+    setComment("");
     //@ts-ignore
     dispatch(addComment(comment, props.cookie, image?.id));
-    setComment("");
   };
   const SHARE_URL = `http://127.0.0.1:3000/image/${image?.id}`;
   const likeImageBoi = () => {
@@ -102,7 +99,11 @@ const ImageDetailsComponent = (props: Props) => {
       // @ts-ignore
       (follow) => follow?.followingId === session?.user?.id
     ).length > 0;
-  console.log(isFollowing);
+  const {
+    isOpen: deleteIsOpen,
+    onOpen: deleteOnOpen,
+    onClose: deleteOnClose,
+  } = useDisclosure();
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -123,19 +124,20 @@ const ImageDetailsComponent = (props: Props) => {
             src={image?.url}
             alt=""
             style={{
-              width: "400px",
+              width: "32%",
               borderRadius: "12px",
               objectFit: "cover",
-              height: "100%",
             }}
           />
           <Flex
-            flex={1}
+            width="68%"
+            paddingRight="25px"
             borderRadius="20px"
             justifyContent="flex-start"
             alignItems="flex-start"
             flexDirection="column"
             gap="1.4rem"
+            position="relative"
           >
             <Flex
               width="100%"
@@ -307,7 +309,7 @@ const ImageDetailsComponent = (props: Props) => {
                       aria-label="Delete"
                       rounded="full"
                       colorScheme="red"
-                      onClick={imageDeleteBoi}
+                      onClick={deleteOnOpen}
                     />
                   </Tooltip>
                 ) : null}
@@ -323,8 +325,14 @@ const ImageDetailsComponent = (props: Props) => {
                 </Button>
               </Tooltip>
             </Flex>
-            <Heading fontSize="25px">{image?.title}</Heading>
-            <Text fontSize="16px">{image?.description}</Text>
+            <Flex width="100%">
+              <Heading fontSize="25px">{image?.title}</Heading>
+            </Flex>
+            <Flex width="100%">
+              <Text fontSize="16px" width="100%">
+                {image?.description}
+              </Text>
+            </Flex>
             <Flex
               alignItems="center"
               justifyContent="space-between"
@@ -335,6 +343,9 @@ const ImageDetailsComponent = (props: Props) => {
                   name={image?.author?.name}
                   src={image?.author?.image}
                   cursor="pointer"
+                  onClick={() => {
+                    router.push(`/user/${image?.author?.id}`);
+                  }}
                 />
                 <Flex flexDirection="column" gap="2px" alignItems="start">
                   <Heading
@@ -342,6 +353,9 @@ const ImageDetailsComponent = (props: Props) => {
                     _hover={{
                       cursor: "pointer",
                       textDecoration: "underline",
+                    }}
+                    onClick={() => {
+                      router.push(`/user/${image?.author?.id}`);
                     }}
                   >
                     {image?.author?.name}
@@ -392,7 +406,15 @@ const ImageDetailsComponent = (props: Props) => {
               }}
               onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
                 if (event.key === "Enter") {
-                  addCommentBoi();
+                  if (comment?.trim()?.length === 0) {
+                    toast.error("Comment cannot be empty", {
+                      position: "top-center",
+                      autoClose: 2000,
+                      theme: "dark",
+                    });
+                  } else {
+                    addCommentBoi();
+                  }
                 }
               }}
             />
@@ -404,6 +426,9 @@ const ImageDetailsComponent = (props: Props) => {
                   name={comment?.user?.name}
                   src={comment?.user?.image}
                   cursor="pointer"
+                  onClick={() => {
+                    router.push(`/user/${comment?.user?.id}`);
+                  }}
                 />
                 <Flex flexDirection="column" alignItems="start" gap="6px">
                   <Flex alignItems="center" gap="10px">
@@ -413,6 +438,9 @@ const ImageDetailsComponent = (props: Props) => {
                       _hover={{
                         cursor: "pointer",
                         textDecoration: "underline",
+                      }}
+                      onClick={() => {
+                        router.push(`/user/${comment?.user?.id}`);
                       }}
                     >
                       {comment?.user?.name}
@@ -434,6 +462,12 @@ const ImageDetailsComponent = (props: Props) => {
           </Flex>
         </Flex>
       </Flex>
+      <DeleteImageModal
+        isOpen={deleteIsOpen}
+        onClose={deleteOnClose}
+        cookie={props.cookie}
+        id={image?.id}
+      />
     </Flex>
   );
 };
