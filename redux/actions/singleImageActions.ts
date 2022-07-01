@@ -41,3 +41,16 @@ export const likeImage =
       console.log(error);
     }
   };
+
+export const saveImage =
+  (imageId: number, cookie: string) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.saveImage(imageId, cookie);
+      dispatch({
+        type: "SAVE_IMAGE",
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };

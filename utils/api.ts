@@ -66,3 +66,21 @@ export const likeImage = (imageId: number, cookie: string) =>
       },
     }
   );
+
+export const saveImage = (imageId: number, cookie: string) =>
+  API.put(
+    `/api/image/${imageId}/save`,
+    {},
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );
+
+export const getSavedImages = (cookie: string) =>
+  API.get(`/api/user/savedimages`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });

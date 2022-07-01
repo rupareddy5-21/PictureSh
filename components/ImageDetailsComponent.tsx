@@ -20,7 +20,11 @@ import { ImageType } from "../utils/types";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { format } from "timeago.js";
-import { addComment, likeImage } from "../redux/actions/singleImageActions";
+import {
+  addComment,
+  likeImage,
+  saveImage,
+} from "../redux/actions/singleImageActions";
 import {
   Popover,
   PopoverTrigger,
@@ -73,6 +77,14 @@ const ImageDetailsComponent = (props: Props) => {
     //@ts-ignore
     image?.likes?.filter((like) => like.userId === session?.user?.id).length >
     0;
+  const isSaved =
+    //@ts-ignore
+    image?.saves?.filter((save) => save.userId === session?.user?.id).length >
+    0;
+  const saveImageBoi = () => {
+    //@ts-ignore
+    dispatch(saveImage(image?.id, props.cookie));
+  };
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -270,8 +282,13 @@ const ImageDetailsComponent = (props: Props) => {
                   />
                 ) : null}
               </Flex>
-              <Button rounded="full" variant="solid" colorScheme="blue">
-                Save
+              <Button
+                rounded="full"
+                variant="solid"
+                colorScheme="blue"
+                onClick={saveImageBoi}
+              >
+                {isSaved ? "UnSave" : "Save"}
               </Button>
             </Flex>
             <Heading fontSize="25px">{image?.title}</Heading>

@@ -21,6 +21,9 @@ const Feed = (props: Props) => {
   const yourimages: ImageType[] = useSelector(
     (state: any) => state.yourimage.imageData
   );
+  const savedimages: ImageType[] = useSelector(
+    (state: any) => state.savedimage.imageData
+  );
   const breakPoints = {
     default: 4,
     1200: 3,
@@ -50,7 +53,11 @@ const Feed = (props: Props) => {
               <ImageBoi key={index} image={image} />
             ))
           : props.isYourImages
-          ? yourimages.map((image, index) => (
+          ? yourimages?.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))
+          : props.isSavedImages
+          ? savedimages?.map((image, index) => (
               <ImageBoi key={index} image={image} />
             ))
           : images?.map((image, index) => (

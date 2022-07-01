@@ -48,6 +48,7 @@ model User {
   images        Image[]
   comments      Comment[]
   likes         Like[]
+  saves         Save[]
 
   @@map("users")
 }
@@ -72,6 +73,7 @@ model Image {
   authorId    String
   comments    Comment[]
   likes       Like[]
+  saves       Save[]
 
   @@map("images")
 }
@@ -96,4 +98,14 @@ model Like {
   imageId Int
 
   @@map("likes")
+}
+
+model Save {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId Int
+
+  @@map("saves")
 }

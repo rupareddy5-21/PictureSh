@@ -49,6 +49,7 @@ export default async function handler(
               },
             },
             author: true,
+            saves: true,
           },
         });
         res.status(201).json(imageboi);

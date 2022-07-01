@@ -24,6 +24,7 @@ export type ImageType = {
   comments: CommentType[];
   createdAt: Date;
   likes: LikeType[];
+  saves: SaveType[];
 };
 
 export type CommentType = {
@@ -39,6 +40,12 @@ export type CreateCommentType = {
 };
 
 export type LikeType = {
+  id: number;
+  userId: string;
+  imageId: number;
+}
+
+export type SaveType = {
   id: number;
   userId: string;
   imageId: number;

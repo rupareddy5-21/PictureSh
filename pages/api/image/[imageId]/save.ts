@@ -23,15 +23,15 @@ export default async function handler(
         res.status(404).json({ error: "Image not found" });
         return;
       }
-      const isLiked = await prisma.like.findFirst({
+      const isSaved = await prisma.save.findFirst({
         where: {
           imageId: parseInt(imageId as string),
           // @ts-ignore
           userId: session?.user?.id,
         },
       });
-      if (isLiked === null) {
-        await prisma.like.create({
+      if (isSaved === null) {
+        await prisma.save.create({
           data: {
             imageId: parseInt(imageId as string),
             // @ts-ignore
@@ -56,9 +56,9 @@ export default async function handler(
         });
         res.status(200).json(image);
       } else {
-        await prisma.like.delete({
+        await prisma.save.delete({
           where: {
-            id: isLiked.id,
+            id: isSaved.id,
           },
         });
         const image = await prisma.image.findUnique({
