@@ -13,7 +13,7 @@ const Login = () => {
   const words = [
     "PictureSh",
     "A place where you can",
-    "share and collect images",
+    "share, collect and save images",
     "of anything you find intersting.",
   ];
   const { text } = useTypewriter({
@@ -22,7 +22,7 @@ const Login = () => {
     onLoopDone() {
       setDisplayLogin(true);
     },
-    typeSpeed: 90,
+    typeSpeed: 60,
     deleteSpeed: 50,
     delaySpeed: 1000,
   });
@@ -39,23 +39,15 @@ const Login = () => {
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
-        backgroundColor="black"
         overflow="hidden"
       >
-        <Flex position="relative" width="100%" height="100%">
-          {/* <video
-            src="/assets/background.mp4"
-            loop
-            controls={false}
-            muted
-            autoPlay
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          /> */}
-        </Flex>
+        <Flex
+          position="relative"
+          width="100%"
+          height="100%"
+          backgroundColor="#FF3CAC"
+          backgroundImage="linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%)"
+        ></Flex>
         <Flex
           position="absolute"
           justifyContent="center"
@@ -67,11 +59,11 @@ const Login = () => {
         >
           <Flex
             flexDirection="column"
-            gap="1rem"
+            gap="2rem"
             width="80%"
             alignItems="center"
           >
-            <Heading color="white" fontSize="5xl" textAlign="center">
+            <Heading color="white" fontSize="7xl" textAlign="center">
               {text}
               <Cursor cursorStyle="_" />
             </Heading>
@@ -103,6 +95,7 @@ const Login = () => {
                   onClick={signInWithGoogle}
                   leftIcon={<FcGoogle />}
                   variant="solid"
+                  size="lg"
                   borderRadius="lg"
                   backgroundColor="white"
                   color="#1a202c"

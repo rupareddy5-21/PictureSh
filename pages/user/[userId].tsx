@@ -50,7 +50,7 @@ const UserProfile = (props: Props) => {
           cookie={props.cookie}
         />
         <Heading
-          fontSize="lg"
+          fontSize="xl"
           fontWeight="bold"
           marginTop="30px"
           marginLeft="-10px"

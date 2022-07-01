@@ -1,8 +1,11 @@
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import Masonry from "react-masonry-css";
 import { useSelector } from "react-redux";
 import { ImageType, UserType } from "../utils/types";
 import ImageBoi from "./Image";
+import Image from "next/image";
+import ohno from "../public/assets/ohno.png";
 
 type Props = {
   isProfile?: boolean;
@@ -46,7 +49,7 @@ const Feed = (props: Props) => {
           props.isSearch ||
           props.isSavedImages ||
           props.isTagImage
-            ? "20px"
+            ? "10px"
             : "100px",
         width: "100%",
       }}

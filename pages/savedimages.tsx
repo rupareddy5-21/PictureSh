@@ -32,16 +32,11 @@ const SavedImages = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar isSavedImages={true} user={session?.user as UserType} />
-      <Flex
-        paddingLeft="25px"
-        paddingRight="10px"
-        flexDirection="column"
-        marginTop="50px"
-      >
+      <Flex paddingLeft="25px" paddingRight="10px" flexDirection="column">
         <Heading
-          fontSize="lg"
+          fontSize="xl"
           fontWeight="bold"
-          marginTop="30px"
+          marginTop="66px"
           marginLeft="-10px"
         >
           Saved images

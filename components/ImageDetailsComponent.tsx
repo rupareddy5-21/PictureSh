@@ -9,7 +9,9 @@ import {
   IconButton,
   Input,
   Text,
+  Tooltip,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
@@ -45,6 +47,7 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { IoIosCopy } from "react-icons/io";
+import { toast } from "react-toastify";
 
 type Props = {
   cookie: string;
@@ -53,7 +56,7 @@ type Props = {
 const ImageDetailsComponent = (props: Props) => {
   const dispatch = useDispatch();
   const image: ImageType = useSelector(
-    (state: any) => state.singleimage.imageData
+    (state: any) => state?.singleimage?.imageData
   );
   const router = useRouter();
   const imageDeleteBoi = () => {
@@ -79,12 +82,27 @@ const ImageDetailsComponent = (props: Props) => {
     0;
   const isSaved =
     //@ts-ignore
-    image?.saves?.filter((save) => save.userId === session?.user?.id).length >
+    image?.saves?.filter((save) => save?.userId === session?.user?.id).length >
     0;
   const saveImageBoi = () => {
     //@ts-ignore
     dispatch(saveImage(image?.id, props.cookie));
   };
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(SHARE_URL);
+    toast.success("Copied to clipboard", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
+      theme: "dark",
+    });
+  };
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const isFollowing =
+    image?.author?.followers?.filter(
+      // @ts-ignore
+      (follow) => follow?.followingId === session?.user?.id
+    ).length > 0;
+  console.log(isFollowing);
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -126,35 +144,41 @@ const ImageDetailsComponent = (props: Props) => {
             >
               <Flex alignItems="center" gap="2rem">
                 <Flex alignItems="center" gap="7px">
-                  <IconButton
-                    icon={
-                      isLiked ? (
-                        <IoHeart size={22} />
-                      ) : (
-                        <IoHeartOutline size={22} />
-                      )
-                    }
-                    aria-label="Like"
-                    rounded="full"
-                    onClick={likeImageBoi}
-                  />
+                  <Tooltip label={isLiked ? "UnLike image" : "Like image"}>
+                    <IconButton
+                      icon={
+                        isLiked ? (
+                          <IoHeart size={22} />
+                        ) : (
+                          <IoHeartOutline size={22} />
+                        )
+                      }
+                      aria-label="Like"
+                      rounded="full"
+                      onClick={likeImageBoi}
+                    />
+                  </Tooltip>
                   <Text fontSize="md" fontWeight="bold">
                     {image?.likes?.length}
                   </Text>
                 </Flex>
-                <IconButton
-                  icon={<FiDownload size={20} />}
-                  aria-label="Download"
-                  rounded="full"
-                />
-                <Popover>
-                  <PopoverTrigger>
-                    <IconButton
-                      icon={<FiShare size={20} />}
-                      aria-label="Share"
-                      rounded="full"
-                    />
-                  </PopoverTrigger>
+                <Tooltip label="Download image">
+                  <IconButton
+                    icon={<FiDownload size={20} />}
+                    aria-label="Download"
+                    rounded="full"
+                  />
+                </Tooltip>
+                <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                  <Tooltip label="Share image">
+                    <PopoverTrigger>
+                      <IconButton
+                        icon={<FiShare size={20} />}
+                        aria-label="Share"
+                        rounded="full"
+                      />
+                    </PopoverTrigger>
+                  </Tooltip>
                   <PopoverContent
                     backgroundColor={
                       colorMode === "dark" ? "#1a1a1a" : "#ffffff"
@@ -174,6 +198,10 @@ const ImageDetailsComponent = (props: Props) => {
                         alignItems="center"
                         cursor="pointer"
                         paddingBottom="8px"
+                        onClick={() => {
+                          copyToClipboard();
+                          onClose();
+                        }}
                       >
                         <IoIosCopy
                           size="24px"
@@ -273,23 +301,27 @@ const ImageDetailsComponent = (props: Props) => {
                 </Popover>
                 {/* @ts-ignore */}
                 {image?.authorId === session?.user?.id ? (
-                  <IconButton
-                    icon={<MdDelete size={20} />}
-                    aria-label="Delete"
-                    rounded="full"
-                    colorScheme="red"
-                    onClick={imageDeleteBoi}
-                  />
+                  <Tooltip label="Delete image">
+                    <IconButton
+                      icon={<MdDelete size={20} />}
+                      aria-label="Delete"
+                      rounded="full"
+                      colorScheme="red"
+                      onClick={imageDeleteBoi}
+                    />
+                  </Tooltip>
                 ) : null}
               </Flex>
-              <Button
-                rounded="full"
-                variant="solid"
-                colorScheme="blue"
-                onClick={saveImageBoi}
-              >
-                {isSaved ? "UnSave" : "Save"}
-              </Button>
+              <Tooltip label={isSaved ? "UnSave image" : "Save image"}>
+                <Button
+                  rounded="full"
+                  variant="solid"
+                  colorScheme="blue"
+                  onClick={saveImageBoi}
+                >
+                  {isSaved ? "UnSave" : "Save"}
+                </Button>
+              </Tooltip>
             </Flex>
             <Heading fontSize="25px">{image?.title}</Heading>
             <Text fontSize="16px">{image?.description}</Text>
@@ -304,15 +336,29 @@ const ImageDetailsComponent = (props: Props) => {
                   src={image?.author?.image}
                   cursor="pointer"
                 />
-                <Flex flexDirection="column" gap="2px">
-                  <Heading fontSize="20px">{image?.author?.name}</Heading>
-                  <Text fontSize="12px" fontWeight="normal">
-                    28 followers
+                <Flex flexDirection="column" gap="2px" alignItems="start">
+                  <Heading
+                    fontSize="20px"
+                    _hover={{
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {image?.author?.name}
+                  </Heading>
+                  <Text fontSize="14px" fontWeight="normal">
+                    {image?.author?.followers?.length} followers
                   </Text>
                 </Flex>
               </Flex>
-              <Button rounded="full " colorScheme="blue">
-                Follow
+              <Button
+                rounded="full "
+                colorScheme="blue"
+                onClick={() => {
+                  router.push(`/user/${image?.author?.id}`);
+                }}
+              >
+                {isFollowing ? "UnFollow" : "Follow"}
               </Button>
             </Flex>
           </Flex>
