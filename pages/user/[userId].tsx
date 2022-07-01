@@ -13,7 +13,11 @@ import { wrapper } from "../../redux/store";
 import * as api from "../../utils/api";
 import { getUsers } from "../../redux/actions/userActions";
 
-const UserProfile = () => {
+type Props = {
+  cookie: string;
+};
+
+const UserProfile = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   return (
@@ -41,7 +45,10 @@ const UserProfile = () => {
         flexDirection="column"
         marginTop="50px"
       >
-        <ProfileComponent currentUser={session?.user as UserType} />
+        <ProfileComponent
+          currentUser={session?.user as UserType}
+          cookie={props.cookie}
+        />
         <Heading
           fontSize="lg"
           fontWeight="bold"
@@ -61,7 +68,10 @@ export default UserProfile;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
     const session = await getSession(context);
-    await store.dispatch(getUsers(context?.params?.userId as string));
+    const cookie = context?.req?.cookies["next-auth.session-token"];
+    await store.dispatch(
+      getUsers(context?.params?.userId as string, cookie as string)
+    );
     if (!session) {
       return {
         redirect: {
@@ -70,7 +80,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
       };
     }
-    const { data } = await api.getUser(context?.params?.userId as string);
+    const { data } = await api.getUser(
+      context?.params?.userId as string,
+      cookie as string
+    );
     if (data === null) {
       return {
         notFound: true,
@@ -79,6 +92,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     return {
       props: {
         session,
+        cookie,
       },
     };
   }

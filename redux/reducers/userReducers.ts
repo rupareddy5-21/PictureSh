@@ -6,7 +6,9 @@ export const user = (
 ) => {
   switch (action.type) {
     case "GET_USER":
-      return {...state, authData: action.payload};
+      return { ...state, authData: action.payload };
+    case "FOLLOW_USER":
+      return { ...state, authData: action.payload };
     default:
       return state;
   }

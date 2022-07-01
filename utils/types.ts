@@ -4,6 +4,8 @@ export type UserType = {
   id: string;
   name: string;
   images: ImageType[];
+  followers: Follow[];
+  following: Follow[];
 };
 
 export type CreateImageType = {
@@ -43,10 +45,16 @@ export type LikeType = {
   id: number;
   userId: string;
   imageId: number;
-}
+};
 
 export type SaveType = {
   id: number;
   userId: string;
   imageId: number;
-}
+};
+
+export type Follow = {
+  id: number;
+  followingId: string;
+  followerId: string;
+};

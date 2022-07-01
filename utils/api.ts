@@ -6,7 +6,12 @@ const API = axios.create({
   withCredentials: true,
 });
 
-export const getUser = (userId: string) => API.get(`/api/user/${userId}`);
+export const getUser = (userId: string, cookie: string) =>
+  API.get(`/api/user/${userId}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
 export const getAllImages = (cookie: string) =>
   API.get(`/api/image`, {
     headers: {
@@ -98,3 +103,14 @@ export const getCategoryImages = (category: string, cookie: string) =>
       Cookie: `next-auth.session-token=${cookie}`,
     },
   });
+
+export const followUser = (userId: string, cookie: string) =>
+  API.put(
+    `/api/user/${userId}/follow`,
+    {},
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );
