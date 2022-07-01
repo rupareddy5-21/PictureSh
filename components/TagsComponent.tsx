@@ -1,9 +1,11 @@
 import React from "react";
 import { Flex, Tag, TagLabel, useColorMode } from "@chakra-ui/react";
 import categories from "../constants/categories";
+import { useRouter } from "next/router";
 
 const TagsComponent = () => {
   const { colorMode } = useColorMode();
+  const router = useRouter();
   return (
     <Flex
       width="100%"
@@ -37,6 +39,11 @@ const TagsComponent = () => {
                 backgroundColor:
                   colorMode === "dark" ? "#ffffff44" : "#f2f2f297",
               }}
+              onClick={() => {
+                router.push(
+                  `/category?t=${category.title.toLocaleLowerCase()}`
+                );
+              }}
             >
               <TagLabel fontWeight="500">{category.title}</TagLabel>
             </Tag>
@@ -54,6 +61,9 @@ const TagsComponent = () => {
                   ? "1px solid #ffffff1a"
                   : "1px solid #e1e1e1"
               }
+              onClick={() => {
+                router.push(`/`);
+              }}
             >
               <TagLabel fontWeight="500">{category.title}</TagLabel>
             </Tag>

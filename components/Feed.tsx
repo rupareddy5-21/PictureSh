@@ -9,6 +9,7 @@ type Props = {
   isYourImages?: boolean;
   isSearch?: boolean;
   isSavedImages?: boolean;
+  isTagImage?: boolean;
 };
 
 const Feed = (props: Props) => {
@@ -24,6 +25,12 @@ const Feed = (props: Props) => {
   const savedimages: ImageType[] = useSelector(
     (state: any) => state.savedimage.imageData
   );
+  const searchimages: ImageType[] = useSelector(
+    (state: any) => state.searchimage.imageData
+  );
+  const categoryimages: ImageType[] = useSelector(
+    (state: any) => state.categoryimage.imageData
+  );
   const breakPoints = {
     default: 4,
     1200: 3,
@@ -37,7 +44,8 @@ const Feed = (props: Props) => {
           props.isProfile ||
           props.isYourImages ||
           props.isSearch ||
-          props.isSavedImages
+          props.isSavedImages ||
+          props.isTagImage
             ? "20px"
             : "100px",
         width: "100%",
@@ -58,6 +66,14 @@ const Feed = (props: Props) => {
             ))
           : props.isSavedImages
           ? savedimages?.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))
+          : props.isSearch
+          ? searchimages?.map((image, index) => (
+              <ImageBoi key={index} image={image} />
+            ))
+          : props.isTagImage
+          ? categoryimages?.map((image, index) => (
               <ImageBoi key={index} image={image} />
             ))
           : images?.map((image, index) => (

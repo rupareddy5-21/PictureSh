@@ -4,6 +4,8 @@ import { image } from "./imageReducer";
 import { singleimage } from "./singleImageReducer";
 import { yourimage } from "./yourImageReducer";
 import { savedimage } from "./savedImageReducer";
+import { searchimage } from "./searchImageReducer";
+import { categoryimage } from "./categoryImageReducer";
 
 const reducers = combineReducers({
   user: user,
@@ -11,6 +13,8 @@ const reducers = combineReducers({
   singleimage: singleimage,
   yourimage: yourimage,
   savedimage: savedimage,
+  searchimage: searchimage,
+  categoryimage: categoryimage,
 });
 
 export default reducers;

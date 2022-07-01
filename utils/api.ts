@@ -84,3 +84,17 @@ export const getSavedImages = (cookie: string) =>
       Cookie: `next-auth.session-token=${cookie}`,
     },
   });
+
+export const searchImages = (search: string, cookie: string) =>
+  API.get(`/api/image/search/${search}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
+
+export const getCategoryImages = (category: string, cookie: string) =>
+  API.get(`/api/image/category/${category}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });

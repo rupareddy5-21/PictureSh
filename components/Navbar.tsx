@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import {
   useColorMode,
@@ -42,6 +42,7 @@ type Props = {
 const Navbar = (props: Props) => {
   const router = useRouter();
   const { colorMode, toggleColorMode } = useColorMode();
+  const [search, setSearch] = useState("");
   return (
     <Flex
       width="100%"
@@ -90,6 +91,10 @@ const Navbar = (props: Props) => {
             style={{
               width: "100%",
             }}
+            onSubmit={(event: React.FormEvent) => {
+              event.preventDefault();
+              router.push(`/search?q=${search}`);
+            }}
           >
             <InputLeftElement pointerEvents="none">
               <BiSearch color="#797a7a" size="1.2rem" />
@@ -101,6 +106,9 @@ const Navbar = (props: Props) => {
                 color: "#797a7a",
               }}
               paddingLeft="2.3rem"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setSearch(event.target.value);
+              }}
             />
           </form>
         </InputGroup>
