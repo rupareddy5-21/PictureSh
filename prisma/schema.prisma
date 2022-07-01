@@ -49,6 +49,8 @@ model User {
   comments      Comment[]
   likes         Like[]
   saves         Save[]
+  followers     Follow[]  @relation("followers")
+  following     Follow[]  @relation("following")
 
   @@map("users")
 }
@@ -108,4 +110,14 @@ model Save {
   imageId Int
 
   @@map("saves")
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  followerId  String
+  followingId String
+  follower    User   @relation("followers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@map("follows")
 }
