@@ -10,7 +10,11 @@ import { UserType } from "../utils/types";
 import { wrapper } from "../redux/store";
 import { getAllImages } from "../redux/actions/imageActions";
 
-const Home: NextPage = () => {
+type Props = {
+  cookie: string;
+};
+
+const Home = (props: Props) => {
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   return (
@@ -33,7 +37,7 @@ const Home: NextPage = () => {
       </Head>
       <Navbar user={session?.user as UserType} category="all" />
       <Flex paddingLeft="25px" paddingRight="10px">
-        <Feed />
+        <Feed cookie={props.cookie} />
       </Flex>
     </motion.div>
   );
@@ -57,6 +61,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     return {
       props: {
         session,
+        cookie,
       },
     };
   }

@@ -45,7 +45,13 @@ export default async function handler(
             include: {
               followers: true,
               following: true,
-              images: true,
+              images: {
+                include: {
+                  author: true,
+                  likes: true,
+                  saves: true,
+                },
+              },
             },
           });
           res.status(200).json(follower);
@@ -60,7 +66,13 @@ export default async function handler(
             include: {
               followers: true,
               following: true,
-              images: true,
+              images: {
+                select: {
+                  author: true,
+                  likes: true,
+                  saves: true,
+                },
+              },
             },
           });
           res.status(200).json(follower);

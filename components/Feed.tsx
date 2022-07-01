@@ -4,8 +4,6 @@ import Masonry from "react-masonry-css";
 import { useSelector } from "react-redux";
 import { ImageType, UserType } from "../utils/types";
 import ImageBoi from "./Image";
-import Image from "next/image";
-import ohno from "../public/assets/ohno.png";
 
 type Props = {
   isProfile?: boolean;
@@ -13,6 +11,7 @@ type Props = {
   isSearch?: boolean;
   isSavedImages?: boolean;
   isTagImage?: boolean;
+  cookie?: string;
 };
 
 const Feed = (props: Props) => {
@@ -80,7 +79,7 @@ const Feed = (props: Props) => {
               <ImageBoi key={index} image={image} />
             ))
           : images?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} cookie={props.cookie} />
             ))}
       </Masonry>
     </div>

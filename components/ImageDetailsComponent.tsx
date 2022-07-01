@@ -49,6 +49,7 @@ import {
 import { IoIosCopy } from "react-icons/io";
 import { toast } from "react-toastify";
 import DeleteImageModal from "./DeleteImageModal";
+import { saveAs } from "file-saver";
 
 type Props = {
   cookie: string;
@@ -104,6 +105,9 @@ const ImageDetailsComponent = (props: Props) => {
     onOpen: deleteOnOpen,
     onClose: deleteOnClose,
   } = useDisclosure();
+  const downloadImage = () => {
+    saveAs(image?.url, "shit.png");
+  };
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -169,6 +173,7 @@ const ImageDetailsComponent = (props: Props) => {
                     icon={<FiDownload size={20} />}
                     aria-label="Download"
                     rounded="full"
+                    onClick={downloadImage}
                   />
                 </Tooltip>
                 <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen}>

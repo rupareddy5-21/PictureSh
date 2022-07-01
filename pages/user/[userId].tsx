@@ -60,7 +60,7 @@ const UserProfile = (props: Props) => {
           marginTop="30px"
           marginLeft="-10px"
         >
-          Userboi images
+          {profileimages?.name} images
         </Heading>
         {profileimages?.images?.length === 0 ? (
           <NotFoundImage title="Seems like this idiot has no images" />

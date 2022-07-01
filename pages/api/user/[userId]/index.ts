@@ -19,7 +19,13 @@ export default async function handler(
           id: userId as string,
         },
         include: {
-          images: true,
+          images: {
+            include: {
+              author: true,
+              likes: true,
+              saves: true,
+            },
+          },
           followers: true,
           following: true,
         },

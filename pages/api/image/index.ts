@@ -15,7 +15,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const images = await prisma.image.findMany({
-        include: { author: true },
+        include: { author: true, likes: true, saves: true },
       });
       res.status(200).json(images);
     } catch (error: any) {
@@ -47,6 +47,8 @@ export default async function handler(
           },
           include: {
             author: true,
+            likes: true,
+            saves: true,
           },
         });
         res.status(201).json(image);
