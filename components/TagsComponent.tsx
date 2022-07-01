@@ -17,13 +17,23 @@ const TagsComponent = (props: Props) => {
         md: "0px 20px",
         sm: "0 5px",
       }}
-      height="45px"
+      height={{
+        md:"45px",
+        sm:"auto"
+      }}
       backgroundColor={colorMode === "light" ? "#FFFFFF" : "#1a1a1a"}
       borderBottom={
         colorMode === "light" ? "1px solid #e5e5e5" : "1px solid #373737"
       }
     >
-      <Flex gap="1rem" alignItems="center" paddingTop="3px" paddingBottom="3px">
+      <Flex
+        gap="1rem"
+        alignItems="center"
+        paddingTop="3px"
+        paddingBottom="3px"
+        flexWrap="wrap"
+        width="100%"
+      >
         {categories.map((category, index) =>
           props.category === category?.title?.toLowerCase() ? (
             <Tag

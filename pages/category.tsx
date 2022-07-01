@@ -46,7 +46,10 @@ const Tag = (props: Props) => {
         <Heading
           fontSize="xl"
           fontWeight="bold"
-          marginTop="110px"
+          marginTop={{
+            md: "110px",
+            sm: "130px",
+          }}
           marginLeft="-10px"
         >
           Category - {props.category}

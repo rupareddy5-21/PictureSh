@@ -88,12 +88,22 @@ const UploadImageComponent = (props: Props) => {
         padding="20px"
         gap="2rem"
         boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+        flexDirection={{
+          md: "row",
+          sm: "column",
+        }}
       >
         <Flex
-          width="40%"
+          width={{
+            md: "40%",
+            sm: "100%",
+          }}
           backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
           borderRadius="20px"
-          padding="10px"
+          padding={{
+            md: "10px",
+            sm: "0px",
+          }}
           cursor="pointer"
         >
           {imageObjectUrl !== "" ? (
@@ -117,6 +127,10 @@ const UploadImageComponent = (props: Props) => {
               flexDirection="column"
               onClick={() => {
                 inputRef.current?.click();
+              }}
+              height={{
+                md: "auto",
+                sm: "200px",
               }}
             >
               <input

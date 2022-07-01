@@ -75,6 +75,10 @@ const Navbar = (props: Props) => {
             router.push("/");
           }}
           className="pictureshlogo"
+          display={{
+            md: "flex",
+            sm: "none",
+          }}
         >
           PictureSh
         </Heading>
@@ -85,7 +89,7 @@ const Navbar = (props: Props) => {
           }}
           marginLeft={{
             md: "10",
-            sm: "20px",
+            sm: "5px",
           }}
         >
           <form
@@ -148,6 +152,10 @@ const Navbar = (props: Props) => {
               icon={<MdAddAPhoto />}
               onClick={() => {
                 router.push("/upload");
+              }}
+              display={{
+                md: "flex",
+                sm: "none",
               }}
             />
           </Tooltip>

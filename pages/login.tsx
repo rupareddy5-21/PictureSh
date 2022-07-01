@@ -60,10 +60,20 @@ const Login = () => {
           <Flex
             flexDirection="column"
             gap="2rem"
-            width="80%"
+            width={{
+              md: "80%",
+              sm: "90%",
+            }}
             alignItems="center"
           >
-            <Heading color="white" fontSize="7xl" textAlign="center">
+            <Heading
+              color="white"
+              fontSize={{
+                md: "7xl",
+                sm: "5xl",
+              }}
+              textAlign="center"
+            >
               {text}
               <Cursor cursorStyle="_" />
             </Heading>

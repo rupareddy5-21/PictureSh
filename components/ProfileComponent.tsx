@@ -80,7 +80,10 @@ const ProfileComponent = (props: Props) => {
         marginTop="50px"
         alignItems="center"
         gap="1rem"
-        width="40%"
+        width={{
+          md: "40%",
+          sm: "100%",
+        }}
       >
         <Avatar
           name={user?.name}
