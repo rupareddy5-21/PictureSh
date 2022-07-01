@@ -41,6 +41,7 @@ export default async function handler(
             id: parseInt(imageId as string),
           },
           include: {
+            likes: true,
             comments: {
               include: { user: true },
               orderBy: {
@@ -48,6 +49,7 @@ export default async function handler(
               },
             },
             author: true,
+            saves: true,
           },
         });
         res.status(201).json(imageboi);

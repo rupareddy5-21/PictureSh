@@ -12,7 +12,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
-import { IoHeartOutline } from "react-icons/io5";
+import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDelete } from "react-icons/md";
 import { deleteImage } from "../redux/actions/imageActions";
@@ -20,7 +20,11 @@ import { ImageType } from "../utils/types";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { format } from "timeago.js";
-import { addComment } from "../redux/actions/singleImageActions";
+import {
+  addComment,
+  likeImage,
+  saveImage,
+} from "../redux/actions/singleImageActions";
 import {
   Popover,
   PopoverTrigger,
@@ -65,6 +69,22 @@ const ImageDetailsComponent = (props: Props) => {
     setComment("");
   };
   const SHARE_URL = `http://127.0.0.1:3000/image/${image?.id}`;
+  const likeImageBoi = () => {
+    //@ts-ignore
+    dispatch(likeImage(image?.id, props.cookie));
+  };
+  const isLiked =
+    //@ts-ignore
+    image?.likes?.filter((like) => like.userId === session?.user?.id).length >
+    0;
+  const isSaved =
+    //@ts-ignore
+    image?.saves?.filter((save) => save.userId === session?.user?.id).length >
+    0;
+  const saveImageBoi = () => {
+    //@ts-ignore
+    dispatch(saveImage(image?.id, props.cookie));
+  };
   return (
     <Flex width="100%" justifyContent="center">
       <Flex
@@ -105,11 +125,23 @@ const ImageDetailsComponent = (props: Props) => {
               justifyContent="space-between"
             >
               <Flex alignItems="center" gap="2rem">
-                <IconButton
-                  icon={<IoHeartOutline size={22} />}
-                  aria-label="Like"
-                  rounded="full"
-                />
+                <Flex alignItems="center" gap="7px">
+                  <IconButton
+                    icon={
+                      isLiked ? (
+                        <IoHeart size={22} />
+                      ) : (
+                        <IoHeartOutline size={22} />
+                      )
+                    }
+                    aria-label="Like"
+                    rounded="full"
+                    onClick={likeImageBoi}
+                  />
+                  <Text fontSize="md" fontWeight="bold">
+                    {image?.likes?.length}
+                  </Text>
+                </Flex>
                 <IconButton
                   icon={<FiDownload size={20} />}
                   aria-label="Download"
@@ -250,8 +282,13 @@ const ImageDetailsComponent = (props: Props) => {
                   />
                 ) : null}
               </Flex>
-              <Button rounded="full" variant="solid" colorScheme="blue">
-                Save
+              <Button
+                rounded="full"
+                variant="solid"
+                colorScheme="blue"
+                onClick={saveImageBoi}
+              >
+                {isSaved ? "UnSave" : "Save"}
               </Button>
             </Flex>
             <Heading fontSize="25px">{image?.title}</Heading>

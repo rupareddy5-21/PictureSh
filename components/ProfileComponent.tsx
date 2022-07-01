@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { FiShare } from "react-icons/fi";
 import { UserType } from "../utils/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Popover,
   PopoverTrigger,
@@ -32,15 +32,31 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { IoIosCopy } from "react-icons/io";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { followUser } from "../redux/actions/userActions";
 
 type Props = {
   currentUser: UserType;
+  cookie: string;
 };
 
 const ProfileComponent = (props: Props) => {
   const { colorMode } = useColorMode();
-  const user = useSelector((state: any) => state.user.authData);
+  const router = useRouter();
+  const user: UserType = useSelector((state: any) => state.user.authData);
   const SHARE_URL = `http://127.0.0.1:3000/user/${user?.id}`;
+  const { data: session } = useSession();
+  const dispatch = useDispatch();
+  const isFollowing =
+    user?.followers?.filter(
+      // @ts-ignore
+      (follow) => follow.followingId === session?.user?.id
+    ).length > 0;
+  const followUserBoi = () => {
+    //@ts-ignore
+    dispatch(followUser(user?.id, props.cookie));
+  };
   return (
     <Flex
       width="100%"
@@ -71,7 +87,7 @@ const ProfileComponent = (props: Props) => {
               Followers
             </Heading>
             <Heading fontSize="lg" fontWeight="semibold">
-              50
+              {user?.followers?.length}
             </Heading>
           </Flex>
           <Flex flexDirection="column" gap="8px" alignItems="center">
@@ -79,7 +95,7 @@ const ProfileComponent = (props: Props) => {
               Following
             </Heading>
             <Heading fontSize="xl" fontWeight="semibold">
-              69
+              {user?.following?.length}
             </Heading>
           </Flex>
         </Flex>
@@ -217,6 +233,9 @@ const ProfileComponent = (props: Props) => {
               size="lg"
               variant="solid"
               colorScheme="blue"
+              onClick={() => {
+                router.push("/upload");
+              }}
             >
               Upload
             </Button>
@@ -226,8 +245,9 @@ const ProfileComponent = (props: Props) => {
               size="lg"
               variant="solid"
               colorScheme="blue"
+              onClick={followUserBoi}
             >
-              Follow
+              {isFollowing ? "UnFollow" : "Follow"}
             </Button>
           )}
         </Flex>

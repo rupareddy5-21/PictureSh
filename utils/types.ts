@@ -4,6 +4,8 @@ export type UserType = {
   id: string;
   name: string;
   images: ImageType[];
+  followers: Follow[];
+  following: Follow[];
 };
 
 export type CreateImageType = {
@@ -23,6 +25,8 @@ export type ImageType = {
   author: UserType;
   comments: CommentType[];
   createdAt: Date;
+  likes: LikeType[];
+  saves: SaveType[];
 };
 
 export type CommentType = {
@@ -35,4 +39,22 @@ export type CommentType = {
 
 export type CreateCommentType = {
   comment: string;
+};
+
+export type LikeType = {
+  id: number;
+  userId: string;
+  imageId: number;
+};
+
+export type SaveType = {
+  id: number;
+  userId: string;
+  imageId: number;
+};
+
+export type Follow = {
+  id: number;
+  followingId: string;
+  followerId: string;
 };

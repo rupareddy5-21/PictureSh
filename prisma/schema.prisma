@@ -47,6 +47,10 @@ model User {
   sessions      Session[]
   images        Image[]
   comments      Comment[]
+  likes         Like[]
+  saves         Save[]
+  followers     Follow[]  @relation("followers")
+  following     Follow[]  @relation("following")
 
   @@map("users")
 }
@@ -70,6 +74,8 @@ model Image {
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
   comments    Comment[]
+  likes       Like[]
+  saves       Save[]
 
   @@map("images")
 }
@@ -84,4 +90,34 @@ model Comment {
   createdAt DateTime @default(now())
 
   @@map("comments")
+}
+
+model Like {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId Int
+
+  @@map("likes")
+}
+
+model Save {
+  id      Int    @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId Int
+
+  @@map("saves")
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  followerId  String
+  followingId String
+  follower    User   @relation("followers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@map("follows")
 }

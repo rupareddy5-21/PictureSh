@@ -6,7 +6,12 @@ const API = axios.create({
   withCredentials: true,
 });
 
-export const getUser = (userId: string) => API.get(`/api/user/${userId}`);
+export const getUser = (userId: string, cookie: string) =>
+  API.get(`/api/user/${userId}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
 export const getAllImages = (cookie: string) =>
   API.get(`/api/image`, {
     headers: {
@@ -49,6 +54,60 @@ export const addComment = (
     {
       comment: data,
     },
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );
+
+export const likeImage = (imageId: number, cookie: string) =>
+  API.put(
+    `/api/image/${imageId}/like`,
+    {},
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );
+
+export const saveImage = (imageId: number, cookie: string) =>
+  API.put(
+    `/api/image/${imageId}/save`,
+    {},
+    {
+      headers: {
+        Cookie: `next-auth.session-token=${cookie}`,
+      },
+    }
+  );
+
+export const getSavedImages = (cookie: string) =>
+  API.get(`/api/user/savedimages`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
+
+export const searchImages = (search: string, cookie: string) =>
+  API.get(`/api/image/search/${search}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
+
+export const getCategoryImages = (category: string, cookie: string) =>
+  API.get(`/api/image/category/${category}`, {
+    headers: {
+      Cookie: `next-auth.session-token=${cookie}`,
+    },
+  });
+
+export const followUser = (userId: string, cookie: string) =>
+  API.put(
+    `/api/user/${userId}/follow`,
+    {},
     {
       headers: {
         Cookie: `next-auth.session-token=${cookie}`,
