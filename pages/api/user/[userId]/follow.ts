@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import prisma from "../../../../utils/prisma";
+import { toast } from "react-toastify";
 
 export default async function handler(
   req: NextApiRequest,
@@ -67,7 +68,7 @@ export default async function handler(
               followers: true,
               following: true,
               images: {
-                select: {
+                include: {
                   author: true,
                   likes: true,
                   saves: true,

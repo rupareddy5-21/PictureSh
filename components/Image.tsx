@@ -109,13 +109,17 @@ const ImageBoi = (props: Props) => {
                 event.stopPropagation();
                 router.push(`/user/${props.image?.authorId}`);
               }}
+              width="60%"
+              flexWrap="wrap"
             >
               <RiArrowRightUpLine color="white" />
               <Heading color="white" fontSize="md" fontWeight="bold">
-                {props.image?.author?.name}
+                {props.image?.author?.name?.length > 15
+                  ? props.image?.author?.name?.slice(0, 14) + "..."
+                  : props.image?.author?.name}
               </Heading>
             </Flex>
-            <Flex alignItems="center" gap="9px" marginRight="4px">
+            <Flex alignItems="center" gap="9px" marginRight="4px" flex={1}>
               <Tooltip label={isLiked ? "Unlike" : "Like"}>
                 <IconButton
                   icon={

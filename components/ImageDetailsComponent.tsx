@@ -7,6 +7,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Input,
   Text,
   Tooltip,
@@ -123,19 +124,30 @@ const ImageDetailsComponent = (props: Props) => {
           backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
           borderRadius="20px"
           boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+          flexDirection={{
+            md: "row",
+            sm: "column",
+          }}
         >
-          <img
+          <Image
             src={image?.url}
             alt=""
-            style={{
-              width: "32%",
-              borderRadius: "12px",
-              objectFit: "cover",
+            width={{
+              md: "32%",
+              sm: "100%",
             }}
+            borderRadius="12px"
+            objectFit="cover"
           />
           <Flex
-            width="68%"
-            paddingRight="25px"
+            width={{
+              md: "68%",
+              sm: "100%",
+            }}
+            paddingRight={{
+              md: "25px",
+              sm: "2px",
+            }}
             borderRadius="20px"
             justifyContent="flex-start"
             alignItems="flex-start"
@@ -148,8 +160,20 @@ const ImageDetailsComponent = (props: Props) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Flex alignItems="center" gap="2rem">
-                <Flex alignItems="center" gap="7px">
+              <Flex
+                alignItems="center"
+                gap={{
+                  md: "2rem",
+                  sm: "1rem",
+                }}
+              >
+                <Flex
+                  alignItems="center"
+                  gap={{
+                    md: "7px",
+                    sm: "4px",
+                  }}
+                >
                   <Tooltip label={isLiked ? "UnLike image" : "Like image"}>
                     <IconButton
                       icon={
@@ -330,10 +354,12 @@ const ImageDetailsComponent = (props: Props) => {
                 </Button>
               </Tooltip>
             </Flex>
-            <Flex width="100%">
-              <Heading fontSize="25px">{image?.title}</Heading>
+            <Flex width="100%" flexWrap="wrap">
+              <Heading fontSize="25px" width="100%">
+                {image?.title}
+              </Heading>
             </Flex>
-            <Flex width="100%">
+            <Flex width="100%" flexWrap="wrap">
               <Text fontSize="16px" width="100%">
                 {image?.description}
               </Text>
