@@ -51,7 +51,7 @@ export default Home;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
     const session = await getSession(context);
-    const cookie = context?.req?.cookies["next-auth.session-token"];
+    const cookie = context?.req?.cookies["__Secure-next-auth.session-token"];
     await store.dispatch(getAllImages(cookie));
     if (!session) {
       return {

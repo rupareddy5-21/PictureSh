@@ -27,6 +27,7 @@ import { IoSave, IoLogOut, IoImages } from "react-icons/io5";
 import { AiFillStar } from "react-icons/ai";
 import { logout } from "../utils/functions";
 import { UserType } from "../utils/types";
+import { toast } from "react-toastify";
 
 type Props = {
   isProfile?: boolean;
@@ -98,7 +99,15 @@ const Navbar = (props: Props) => {
             }}
             onSubmit={(event: React.FormEvent) => {
               event.preventDefault();
-              router.push(`/search?q=${search}`);
+              if (search?.trim()?.length === 0) {
+                toast.warn("Please enter a search term", {
+                  position: toast.POSITION.TOP_CENTER,
+                  autoClose: 3000,
+                  theme: "dark",
+                });
+              } else {
+                router.push(`/search?q=${search}`);
+              }
             }}
           >
             <InputLeftElement pointerEvents="none">

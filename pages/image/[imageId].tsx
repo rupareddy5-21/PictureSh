@@ -61,7 +61,7 @@ export default ImageDetails;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
-    const cookie = context?.req?.cookies["next-auth.session-token"];
+    const cookie = context?.req?.cookies["__Secure-next-auth.session-token"];
     await store.dispatch(
       getSingleImage(parseInt(context.query.imageId as string), cookie)
     );

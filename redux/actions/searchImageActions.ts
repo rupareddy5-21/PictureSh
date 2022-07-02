@@ -26,3 +26,16 @@ export const likeImageSearch =
       console.log(error);
     }
   };
+
+export const saveImageSearch =
+  (imageId: number, cookie: string) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.saveImage(imageId, cookie);
+      dispatch({
+        type: "SAVE_IMAGE_SEARCH",
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };

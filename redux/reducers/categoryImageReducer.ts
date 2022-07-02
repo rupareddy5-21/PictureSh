@@ -18,6 +18,13 @@ export const categoryimage = (
           image.id === action.payload.id ? action.payload : image
         ),
       };
+    case "SAVE_IMAGE_CATEGORIES":
+      return {
+        ...state,
+        imageData: state.imageData?.map((image) =>
+          image.id === action.payload.id ? action.payload : image
+        ),
+      };
     default:
       return state;
   }

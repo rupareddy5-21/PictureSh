@@ -19,10 +19,22 @@ import { saveAs } from "file-saver";
 import { GoComment } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { likeImageAll, saveImageAll } from "../redux/actions/imageActions";
-import { likeImageSearch } from "../redux/actions/searchImageActions";
-import { likeImageCategories } from "../redux/actions/categoryImageAction";
-import { likeImageSaved } from "../redux/actions/savedImageActions";
-import { likeImageYour } from "../redux/actions/yourImageActions";
+import {
+  likeImageSearch,
+  saveImageSearch,
+} from "../redux/actions/searchImageActions";
+import {
+  likeImageCategories,
+  saveImageCategories,
+} from "../redux/actions/categoryImageAction";
+import {
+  likeImageSaved,
+  saveImageSaved,
+} from "../redux/actions/savedImageActions";
+import {
+  likeImageYour,
+  saveImageYour,
+} from "../redux/actions/yourImageActions";
 
 type Props = {
   image: ImageType;
@@ -75,6 +87,22 @@ const ImageBoi = (props: Props) => {
     //@ts-ignore
     dispatch(saveImageAll(props.image?.id, props.cookie));
   };
+  const saveImageSearchBoi = () => {
+    //@ts-ignore
+    dispatch(saveImageSearch(props.image?.id, props.cookie));
+  };
+  const saveImageCategoriesBoi = () => {
+    //@ts-ignore
+    dispatch(saveImageCategories(props.image?.id, props.cookie));
+  };
+  const saveImageSavedBoi = () => {
+    //@ts-ignore
+    dispatch(saveImageSaved(props.image?.id, props.cookie));
+  };
+  const saveImageYourBoi = () => {
+    //@ts-ignore
+    dispatch(saveImageYour(props.image?.id, props.cookie));
+  };
   return (
     <Flex
       width="100%"
@@ -124,7 +152,17 @@ const ImageBoi = (props: Props) => {
               marginRight="10px"
               onClick={(event: React.MouseEvent) => {
                 event.stopPropagation();
-                props.isProfile ? null : saveImageAllBoi();
+                props.isProfile
+                  ? router.push(`/image/${props.image?.id}`)
+                  : props.isSearch
+                  ? saveImageSearchBoi()
+                  : props.isTagImage
+                  ? saveImageCategoriesBoi()
+                  : props.isSavedImages
+                  ? saveImageSavedBoi()
+                  : props.isYourImages
+                  ? saveImageYourBoi()
+                  : saveImageAllBoi();
               }}
             >
               {isSaved ? "UnSave" : "Save"}
@@ -172,7 +210,7 @@ const ImageBoi = (props: Props) => {
                   onClick={(event: React.MouseEvent) => {
                     event.stopPropagation();
                     props.isProfile
-                      ? null
+                      ? router.push(`/image/${props.image?.id}`)
                       : props.isSearch
                       ? likeImageSearchBoi()
                       : props.isTagImage

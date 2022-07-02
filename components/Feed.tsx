@@ -60,7 +60,7 @@ const Feed = (props: Props) => {
       >
         {props.isProfile
           ? profileimages?.images?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} isProfile={true} />
             ))
           : props.isYourImages
           ? yourimages?.map((image, index) => (

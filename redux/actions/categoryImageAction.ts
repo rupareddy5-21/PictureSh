@@ -26,3 +26,16 @@ export const likeImageCategories =
       console.log(error);
     }
   };
+
+export const saveImageCategories =
+  (imageId: number, cookie: string) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.saveImage(imageId, cookie);
+      dispatch({
+        type: "SAVE_IMAGE_CATEGORIES",
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
