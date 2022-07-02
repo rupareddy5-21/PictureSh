@@ -18,9 +18,19 @@ import { useSession } from "next-auth/react";
 import { saveAs } from "file-saver";
 import { GoComment } from "react-icons/go";
 import { useDispatch } from "react-redux";
+import { likeImageAll, saveImageAll } from "../redux/actions/imageActions";
+import { likeImageSearch } from "../redux/actions/searchImageActions";
+import { likeImageCategories } from "../redux/actions/categoryImageAction";
+import { likeImageSaved } from "../redux/actions/savedImageActions";
+import { likeImageYour } from "../redux/actions/yourImageActions";
 
 type Props = {
   image: ImageType;
+  isProfile?: boolean;
+  isYourImages?: boolean;
+  isSearch?: boolean;
+  isSavedImages?: boolean;
+  isTagImage?: boolean;
   cookie?: string;
 };
 
@@ -41,6 +51,30 @@ const ImageBoi = (props: Props) => {
     props.image?.saves?.filter((save) => save?.userId === session?.user?.id)
       .length > 0;
   const dispatch = useDispatch();
+  const likeImageAllBoi = () => {
+    //@ts-ignore
+    dispatch(likeImageAll(props.image?.id, props.cookie));
+  };
+  const likeImageSearchBoi = () => {
+    //@ts-ignore
+    dispatch(likeImageSearch(props.image?.id, props.cookie));
+  };
+  const likeImageCategoriesBoi = () => {
+    //@ts-ignore
+    dispatch(likeImageCategories(props.image?.id, props.cookie));
+  };
+  const likeImageSavedBoi = () => {
+    //@ts-ignore
+    dispatch(likeImageSaved(props.image?.id, props.cookie));
+  };
+  const likeImageYourBoi = () => {
+    //@ts-ignore
+    dispatch(likeImageYour(props.image?.id, props.cookie));
+  };
+  const saveImageAllBoi = () => {
+    //@ts-ignore
+    dispatch(saveImageAll(props.image?.id, props.cookie));
+  };
   return (
     <Flex
       width="100%"
@@ -88,6 +122,10 @@ const ImageBoi = (props: Props) => {
               variant="solid"
               colorScheme="blue"
               marginRight="10px"
+              onClick={(event: React.MouseEvent) => {
+                event.stopPropagation();
+                props.isProfile ? null : saveImageAllBoi();
+              }}
             >
               {isSaved ? "UnSave" : "Save"}
             </Button>
@@ -131,6 +169,20 @@ const ImageBoi = (props: Props) => {
                   }
                   aria-label="Like"
                   rounded="full"
+                  onClick={(event: React.MouseEvent) => {
+                    event.stopPropagation();
+                    props.isProfile
+                      ? null
+                      : props.isSearch
+                      ? likeImageSearchBoi()
+                      : props.isTagImage
+                      ? likeImageCategoriesBoi()
+                      : props.isSavedImages
+                      ? likeImageSavedBoi()
+                      : props.isYourImages
+                      ? likeImageYourBoi()
+                      : likeImageAllBoi();
+                  }}
                 />
               </Tooltip>
               <Tooltip label={"Comments"}>

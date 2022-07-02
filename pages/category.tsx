@@ -76,7 +76,7 @@ export default Tag;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
     const session = await getSession(context);
-    const cookie = context?.req?.cookies["__Secure-next-auth.session-token"];
+    const cookie = context?.req?.cookies["next-auth.session-token"];
     const category = context?.query?.t;
     await store.dispatch(getCategoryImages(category as string, cookie));
     if (!session) {

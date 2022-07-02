@@ -51,7 +51,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       },
     };
   }
-  const cookie = ctx.req?.cookies["__Secure-next-auth.session-token"];
+  const cookie = ctx.req?.cookies["next-auth.session-token"];
   return {
     props: {
       session,

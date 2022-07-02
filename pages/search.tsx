@@ -69,7 +69,7 @@ export default Search;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context: GetServerSidePropsContext) => {
-    const cookie = context?.req?.cookies["__Secure-next-auth.session-token"];
+    const cookie = context?.req?.cookies["next-auth.session-token"];
     const stuff = context.query.q as string;
     await store.dispatch(getsearchImages(stuff, cookie));
     const session = await getSession(context);

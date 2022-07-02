@@ -64,19 +64,19 @@ const Feed = (props: Props) => {
             ))
           : props.isYourImages
           ? yourimages?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} isYourImages={true} />
             ))
           : props.isSavedImages
           ? savedimages?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} isSavedImages={true} />
             ))
           : props.isSearch
           ? searchimages?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} isSearch={true} />
             ))
           : props.isTagImage
           ? categoryimages?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} isTagImage={true} />
             ))
           : images?.map((image, index) => (
               <ImageBoi key={index} image={image} cookie={props.cookie} />

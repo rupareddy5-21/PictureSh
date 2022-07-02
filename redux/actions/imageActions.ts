@@ -70,3 +70,29 @@ export const deleteImage =
       console.log(error);
     }
   };
+
+export const likeImageAll =
+  (imageId: number, cookie: string) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.likeImage(imageId, cookie);
+      dispatch({
+        type: "LIKE_IMAGE_ALL",
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+export const saveImageAll =
+  (imageId: number, cookie: string) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await api.saveImage(imageId, cookie);
+      dispatch({
+        type: "SAVE_IMAGE_ALL",
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
