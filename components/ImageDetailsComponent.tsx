@@ -443,6 +443,12 @@ const ImageDetailsComponent = (props: Props) => {
                       autoClose: 2000,
                       theme: "dark",
                     });
+                  } else if (comment?.trim()?.length >= 254) {
+                    toast.error("Comment should be less than 255 characters", {
+                      position: "top-center",
+                      autoClose: 2000,
+                      theme: "dark",
+                    });
                   } else {
                     addCommentBoi();
                   }
