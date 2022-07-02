@@ -16,6 +16,8 @@ export default async function handler(
       const images = await prisma.image.findMany({
         include: {
           author: true,
+          likes: true,
+          saves: true,
         },
         where: {
           saves: {

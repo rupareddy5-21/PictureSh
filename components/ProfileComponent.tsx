@@ -7,6 +7,7 @@ import {
   IconButton,
   Text,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
 import { FiShare } from "react-icons/fi";
@@ -35,6 +36,7 @@ import { IoIosCopy } from "react-icons/io";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { followUser } from "../redux/actions/userActions";
+import { toast } from "react-toastify";
 
 type Props = {
   currentUser: UserType;
@@ -44,19 +46,28 @@ type Props = {
 const ProfileComponent = (props: Props) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
-  const user: UserType = useSelector((state: any) => state.user.authData);
+  const user: UserType = useSelector((state: any) => state?.user?.authData);
   const SHARE_URL = `http://127.0.0.1:3000/user/${user?.id}`;
   const { data: session } = useSession();
   const dispatch = useDispatch();
   const isFollowing =
     user?.followers?.filter(
       // @ts-ignore
-      (follow) => follow.followingId === session?.user?.id
+      (follow) => follow?.followingId === session?.user?.id
     ).length > 0;
   const followUserBoi = () => {
     //@ts-ignore
     dispatch(followUser(user?.id, props.cookie));
   };
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(SHARE_URL);
+    toast.success("Copied to clipboard", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
+      theme: "dark",
+    });
+  };
+  const { onOpen, onClose, isOpen } = useDisclosure();
   return (
     <Flex
       width="100%"
@@ -69,7 +80,10 @@ const ProfileComponent = (props: Props) => {
         marginTop="50px"
         alignItems="center"
         gap="1rem"
-        width="40%"
+        width={{
+          md: "40%",
+          sm: "100%",
+        }}
       >
         <Avatar
           name={user?.name}
@@ -105,7 +119,12 @@ const ProfileComponent = (props: Props) => {
           width="100%"
           justifyContent="center"
         >
-          <Popover>
+          <Popover
+            closeOnBlur={false}
+            onOpen={onOpen}
+            onClose={onClose}
+            isOpen={isOpen}
+          >
             <PopoverTrigger>
               <IconButton
                 aria-label="share"
@@ -130,6 +149,10 @@ const ProfileComponent = (props: Props) => {
                   alignItems="center"
                   cursor="pointer"
                   paddingBottom="8px"
+                  onClick={() => {
+                    copyToClipboard();
+                    onClose();
+                  }}
                 >
                   <IoIosCopy
                     size="24px"

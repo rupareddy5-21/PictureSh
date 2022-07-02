@@ -7,9 +7,12 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Input,
   Text,
+  Tooltip,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
@@ -45,6 +48,9 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { IoIosCopy } from "react-icons/io";
+import { toast } from "react-toastify";
+import DeleteImageModal from "./DeleteImageModal";
+import { saveAs } from "file-saver";
 
 type Props = {
   cookie: string;
@@ -53,20 +59,16 @@ type Props = {
 const ImageDetailsComponent = (props: Props) => {
   const dispatch = useDispatch();
   const image: ImageType = useSelector(
-    (state: any) => state.singleimage.imageData
+    (state: any) => state?.singleimage?.imageData
   );
   const router = useRouter();
-  const imageDeleteBoi = () => {
-    //@ts-ignore
-    dispatch(deleteImage(image?.id, router, props.cookie));
-  };
   const { colorMode } = useColorMode();
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const addCommentBoi = () => {
+    setComment("");
     //@ts-ignore
     dispatch(addComment(comment, props.cookie, image?.id));
-    setComment("");
   };
   const SHARE_URL = `http://127.0.0.1:3000/image/${image?.id}`;
   const likeImageBoi = () => {
@@ -79,11 +81,33 @@ const ImageDetailsComponent = (props: Props) => {
     0;
   const isSaved =
     //@ts-ignore
-    image?.saves?.filter((save) => save.userId === session?.user?.id).length >
+    image?.saves?.filter((save) => save?.userId === session?.user?.id).length >
     0;
   const saveImageBoi = () => {
     //@ts-ignore
     dispatch(saveImage(image?.id, props.cookie));
+  };
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(SHARE_URL);
+    toast.success("Copied to clipboard", {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 3000,
+      theme: "dark",
+    });
+  };
+  const { onOpen, onClose, isOpen } = useDisclosure();
+  const isFollowing =
+    image?.author?.followers?.filter(
+      // @ts-ignore
+      (follow) => follow?.followingId === session?.user?.id
+    ).length > 0;
+  const {
+    isOpen: deleteIsOpen,
+    onOpen: deleteOnOpen,
+    onClose: deleteOnClose,
+  } = useDisclosure();
+  const downloadImage = () => {
+    saveAs(image?.url, "shit.png");
   };
   return (
     <Flex width="100%" justifyContent="center">
@@ -100,61 +124,92 @@ const ImageDetailsComponent = (props: Props) => {
           backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
           borderRadius="20px"
           boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+          flexDirection={{
+            md: "row",
+            sm: "column",
+          }}
         >
-          <img
+          <Image
             src={image?.url}
             alt=""
-            style={{
-              width: "400px",
-              borderRadius: "12px",
-              objectFit: "cover",
-              height: "100%",
+            width={{
+              md: "32%",
+              sm: "100%",
             }}
+            borderRadius="12px"
+            objectFit="cover"
           />
           <Flex
-            flex={1}
+            width={{
+              md: "68%",
+              sm: "100%",
+            }}
+            paddingRight={{
+              md: "25px",
+              sm: "2px",
+            }}
             borderRadius="20px"
             justifyContent="flex-start"
             alignItems="flex-start"
             flexDirection="column"
             gap="1.4rem"
+            position="relative"
           >
             <Flex
               width="100%"
               alignItems="center"
               justifyContent="space-between"
             >
-              <Flex alignItems="center" gap="2rem">
-                <Flex alignItems="center" gap="7px">
-                  <IconButton
-                    icon={
-                      isLiked ? (
-                        <IoHeart size={22} />
-                      ) : (
-                        <IoHeartOutline size={22} />
-                      )
-                    }
-                    aria-label="Like"
-                    rounded="full"
-                    onClick={likeImageBoi}
-                  />
+              <Flex
+                alignItems="center"
+                gap={{
+                  md: "2rem",
+                  sm: "1rem",
+                }}
+              >
+                <Flex
+                  alignItems="center"
+                  gap={{
+                    md: "7px",
+                    sm: "4px",
+                  }}
+                >
+                  <Tooltip label={isLiked ? "UnLike image" : "Like image"}>
+                    <IconButton
+                      icon={
+                        isLiked ? (
+                          <IoHeart size={22} />
+                        ) : (
+                          <IoHeartOutline size={22} />
+                        )
+                      }
+                      aria-label="Like"
+                      rounded="full"
+                      onClick={likeImageBoi}
+                    />
+                  </Tooltip>
                   <Text fontSize="md" fontWeight="bold">
                     {image?.likes?.length}
                   </Text>
                 </Flex>
-                <IconButton
-                  icon={<FiDownload size={20} />}
-                  aria-label="Download"
-                  rounded="full"
-                />
-                <Popover>
-                  <PopoverTrigger>
-                    <IconButton
-                      icon={<FiShare size={20} />}
-                      aria-label="Share"
-                      rounded="full"
-                    />
-                  </PopoverTrigger>
+                <Tooltip label="Download image">
+                  <IconButton
+                    icon={<FiDownload size={20} />}
+                    aria-label="Download"
+                    rounded="full"
+                    onClick={downloadImage}
+                  />
+                </Tooltip>
+                <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+                  <Tooltip label="Share image">
+                    <PopoverTrigger>
+                      <IconButton
+                        icon={<FiShare size={20} />}
+                        aria-label="Share"
+                        rounded="full"
+                      />
+                    </PopoverTrigger>
+                  </Tooltip>
                   <PopoverContent
                     backgroundColor={
                       colorMode === "dark" ? "#1a1a1a" : "#ffffff"
@@ -174,6 +229,10 @@ const ImageDetailsComponent = (props: Props) => {
                         alignItems="center"
                         cursor="pointer"
                         paddingBottom="8px"
+                        onClick={() => {
+                          copyToClipboard();
+                          onClose();
+                        }}
                       >
                         <IoIosCopy
                           size="24px"
@@ -273,26 +332,38 @@ const ImageDetailsComponent = (props: Props) => {
                 </Popover>
                 {/* @ts-ignore */}
                 {image?.authorId === session?.user?.id ? (
-                  <IconButton
-                    icon={<MdDelete size={20} />}
-                    aria-label="Delete"
-                    rounded="full"
-                    colorScheme="red"
-                    onClick={imageDeleteBoi}
-                  />
+                  <Tooltip label="Delete image">
+                    <IconButton
+                      icon={<MdDelete size={20} />}
+                      aria-label="Delete"
+                      rounded="full"
+                      colorScheme="red"
+                      onClick={deleteOnOpen}
+                    />
+                  </Tooltip>
                 ) : null}
               </Flex>
-              <Button
-                rounded="full"
-                variant="solid"
-                colorScheme="blue"
-                onClick={saveImageBoi}
-              >
-                {isSaved ? "UnSave" : "Save"}
-              </Button>
+              <Tooltip label={isSaved ? "UnSave image" : "Save image"}>
+                <Button
+                  rounded="full"
+                  variant="solid"
+                  colorScheme="blue"
+                  onClick={saveImageBoi}
+                >
+                  {isSaved ? "UnSave" : "Save"}
+                </Button>
+              </Tooltip>
             </Flex>
-            <Heading fontSize="25px">{image?.title}</Heading>
-            <Text fontSize="16px">{image?.description}</Text>
+            <Flex width="100%" flexWrap="wrap">
+              <Heading fontSize="25px" width="100%">
+                {image?.title}
+              </Heading>
+            </Flex>
+            <Flex width="100%" flexWrap="wrap">
+              <Text fontSize="16px" width="100%">
+                {image?.description}
+              </Text>
+            </Flex>
             <Flex
               alignItems="center"
               justifyContent="space-between"
@@ -303,16 +374,36 @@ const ImageDetailsComponent = (props: Props) => {
                   name={image?.author?.name}
                   src={image?.author?.image}
                   cursor="pointer"
+                  onClick={() => {
+                    router.push(`/user/${image?.author?.id}`);
+                  }}
                 />
-                <Flex flexDirection="column" gap="2px">
-                  <Heading fontSize="20px">{image?.author?.name}</Heading>
-                  <Text fontSize="12px" fontWeight="normal">
-                    28 followers
+                <Flex flexDirection="column" gap="2px" alignItems="start">
+                  <Heading
+                    fontSize="20px"
+                    _hover={{
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    }}
+                    onClick={() => {
+                      router.push(`/user/${image?.author?.id}`);
+                    }}
+                  >
+                    {image?.author?.name}
+                  </Heading>
+                  <Text fontSize="14px" fontWeight="normal">
+                    {image?.author?.followers?.length} followers
                   </Text>
                 </Flex>
               </Flex>
-              <Button rounded="full " colorScheme="blue">
-                Follow
+              <Button
+                rounded="full "
+                colorScheme="blue"
+                onClick={() => {
+                  router.push(`/user/${image?.author?.id}`);
+                }}
+              >
+                {isFollowing ? "UnFollow" : "Follow"}
               </Button>
             </Flex>
           </Flex>
@@ -346,7 +437,15 @@ const ImageDetailsComponent = (props: Props) => {
               }}
               onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => {
                 if (event.key === "Enter") {
-                  addCommentBoi();
+                  if (comment?.trim()?.length === 0) {
+                    toast.error("Comment cannot be empty", {
+                      position: "top-center",
+                      autoClose: 2000,
+                      theme: "dark",
+                    });
+                  } else {
+                    addCommentBoi();
+                  }
                 }
               }}
             />
@@ -358,6 +457,9 @@ const ImageDetailsComponent = (props: Props) => {
                   name={comment?.user?.name}
                   src={comment?.user?.image}
                   cursor="pointer"
+                  onClick={() => {
+                    router.push(`/user/${comment?.user?.id}`);
+                  }}
                 />
                 <Flex flexDirection="column" alignItems="start" gap="6px">
                   <Flex alignItems="center" gap="10px">
@@ -367,6 +469,9 @@ const ImageDetailsComponent = (props: Props) => {
                       _hover={{
                         cursor: "pointer",
                         textDecoration: "underline",
+                      }}
+                      onClick={() => {
+                        router.push(`/user/${comment?.user?.id}`);
                       }}
                     >
                       {comment?.user?.name}
@@ -388,6 +493,12 @@ const ImageDetailsComponent = (props: Props) => {
           </Flex>
         </Flex>
       </Flex>
+      <DeleteImageModal
+        isOpen={deleteIsOpen}
+        onClose={deleteOnClose}
+        cookie={props.cookie}
+        id={image?.id}
+      />
     </Flex>
   );
 };

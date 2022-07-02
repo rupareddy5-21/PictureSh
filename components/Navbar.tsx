@@ -7,7 +7,6 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  Button,
   Tooltip,
   IconButton,
   Avatar,
@@ -37,6 +36,7 @@ type Props = {
   isUploadImage?: boolean;
   isSingleImage?: boolean;
   user?: UserType;
+  category?: string;
 };
 
 const Navbar = (props: Props) => {
@@ -69,10 +69,15 @@ const Navbar = (props: Props) => {
       >
         <Heading
           as="h3"
-          size="lg"
+          size="xl"
           cursor="pointer"
           onClick={() => {
             router.push("/");
+          }}
+          className="pictureshlogo"
+          display={{
+            md: "flex",
+            sm: "none",
           }}
         >
           PictureSh
@@ -84,7 +89,7 @@ const Navbar = (props: Props) => {
           }}
           marginLeft={{
             md: "10",
-            sm: "20px",
+            sm: "5px",
           }}
         >
           <form
@@ -148,6 +153,10 @@ const Navbar = (props: Props) => {
               onClick={() => {
                 router.push("/upload");
               }}
+              display={{
+                md: "flex",
+                sm: "none",
+              }}
             />
           </Tooltip>
         </Flex>
@@ -195,7 +204,16 @@ const Navbar = (props: Props) => {
               Saved images
             </MenuItem>
             <MenuDivider />
-            <MenuItem icon={<AiFillStar size={18} />}>Star on github</MenuItem>
+            <MenuItem
+              color="#E3B341"
+              icon={<AiFillStar size={18} />}
+              onClick={() => {
+                window.location.href =
+                  "https://github.com/VarunLanjhara/PictureSh";
+              }}
+            >
+              Star on github
+            </MenuItem>
             <MenuItem
               icon={<IoLogOut size={18} />}
               color="red.400"
@@ -212,7 +230,7 @@ const Navbar = (props: Props) => {
       props.isSavedImages ||
       props.isUploadImage ||
       props.isSingleImage ? null : (
-        <TagsComponent />
+        <TagsComponent category={props.category} />
       )}
     </Flex>
   );

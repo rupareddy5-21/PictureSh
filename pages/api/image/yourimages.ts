@@ -20,6 +20,8 @@ export default async function handler(
         },
         include: {
           author: true,
+          likes: true,
+          saves: true,
         },
       });
       res.status(200).json(images);

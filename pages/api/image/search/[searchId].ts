@@ -15,7 +15,7 @@ export default async function handler(
   if (req.method === "GET") {
     try {
       const images = await prisma.image.findMany({
-        include: { author: true },
+        include: { author: true, likes: true, saves: true },
         where: {
           title: {
             contains: searchId as string,

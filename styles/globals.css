@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Open+Sans:wght@400;500;600&family=Roboto:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap");
+
 html,
 body {
   padding: 0;
@@ -41,4 +43,8 @@ a {
 ::-webkit-scrollbar-thumb {
   background: #616161;
   border-radius: 2px;
+}
+
+.pictureshlogo {
+  font-family: "Dancing Script", cursive !important;
 }

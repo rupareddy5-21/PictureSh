@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import Masonry from "react-masonry-css";
 import { useSelector } from "react-redux";
@@ -10,6 +11,7 @@ type Props = {
   isSearch?: boolean;
   isSavedImages?: boolean;
   isTagImage?: boolean;
+  cookie?: string;
 };
 
 const Feed = (props: Props) => {
@@ -46,7 +48,7 @@ const Feed = (props: Props) => {
           props.isSearch ||
           props.isSavedImages ||
           props.isTagImage
-            ? "20px"
+            ? "10px"
             : "100px",
         width: "100%",
       }}
@@ -77,7 +79,7 @@ const Feed = (props: Props) => {
               <ImageBoi key={index} image={image} />
             ))
           : images?.map((image, index) => (
-              <ImageBoi key={index} image={image} />
+              <ImageBoi key={index} image={image} cookie={props.cookie} />
             ))}
       </Masonry>
     </div>

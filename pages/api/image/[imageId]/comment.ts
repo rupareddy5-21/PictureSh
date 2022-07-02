@@ -48,7 +48,12 @@ export default async function handler(
                 createdAt: "desc",
               },
             },
-            author: true,
+            author: {
+              include: {
+                followers: true,
+                following: true,
+              },
+            },
             saves: true,
           },
         });

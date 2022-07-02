@@ -2,10 +2,13 @@
 import {
   Button,
   Flex,
+  FormControl,
+  FormHelperText,
   Input,
   Select,
   Text,
   Textarea,
+  Tooltip,
   useColorMode,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
@@ -58,7 +61,9 @@ const UploadImageComponent = (props: Props) => {
     const json = await databoi.json();
     return json.secure_url;
   };
+  const [loading, setLoading] = useState(false);
   const uploadImageBoi = async () => {
+    setLoading(true);
     const url = await uploadImageCloudinary();
     const databoi = {
       title: data.title,
@@ -67,7 +72,7 @@ const UploadImageComponent = (props: Props) => {
       url: url,
     };
     //@ts-ignore
-    dispatch(uploadImage(databoi, props.cookie, router));
+    dispatch(uploadImage(databoi, props.cookie, router, setLoading));
   };
   const { colorMode } = useColorMode();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,19 +81,29 @@ const UploadImageComponent = (props: Props) => {
     <Flex width="100%" justifyContent="center">
       <Flex
         marginBottom="20px"
-        width="80%"
+        width="90%"
         marginTop="130px"
         backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
         borderRadius="20px"
         padding="20px"
         gap="2rem"
         boxShadow="rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px"
+        flexDirection={{
+          md: "row",
+          sm: "column",
+        }}
       >
         <Flex
-          width="40%"
+          width={{
+            md: "40%",
+            sm: "100%",
+          }}
           backgroundColor={colorMode === "dark" ? "#1a1a1a" : "#ffffff"}
           borderRadius="20px"
-          padding="10px"
+          padding={{
+            md: "10px",
+            sm: "0px",
+          }}
           cursor="pointer"
         >
           {imageObjectUrl !== "" ? (
@@ -113,6 +128,10 @@ const UploadImageComponent = (props: Props) => {
               onClick={() => {
                 inputRef.current?.click();
               }}
+              height={{
+                md: "auto",
+                sm: "200px",
+              }}
             >
               <input
                 type="file"
@@ -127,45 +146,94 @@ const UploadImageComponent = (props: Props) => {
               <Text fontWeight="semibold" fontSize="sm" marginTop="20px">
                 Click to upload image
               </Text>
+              <Text fontWeight="semibold" fontSize="sm" marginTop="5px">
+                Image is required
+              </Text>
             </Flex>
           )}
         </Flex>
         <Flex flex={1} flexDirection="column" gap="2rem">
-          <Input
-            variant="flushed"
-            placeholder="Title"
-            fontSize="25px"
-            size="lg"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setData({ ...data, title: e.target.value });
-            }}
-          />
-          <Textarea
-            placeholder="Description"
-            size="lg"
-            height="130px"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              setData({ ...data, description: e.target.value });
-            }}
-          />
-          <Select
-            placeholder="Select category"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              setData({ ...data, category: e.target.value });
-            }}
-          >
-            <option value="programming">Programming</option>
-            <option value="music">Music</option>
-            <option value="gaming">Gaming</option>
-            <option value="cats">Cats</option>
-            <option value="coffee">Coffee</option>
-            <option value="idk">Idk</option>
-            <option value="shit">Shit</option>
-            <option value="other">Other</option>
-          </Select>
-          <Button colorScheme="blue" rounded="full" onClick={uploadImageBoi}>
-            Upload
-          </Button>
+          <FormControl>
+            <Input
+              variant="flushed"
+              placeholder="Title"
+              fontSize="25px"
+              size="lg"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setData({ ...data, title: e.target.value });
+              }}
+            />
+            {data?.title?.length >= 5 && data?.title?.length <= 50 ? null : (
+              <FormHelperText>
+                Title should be between 5 to 50 characters
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <Textarea
+              placeholder="Description"
+              size="lg"
+              height="130px"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                setData({ ...data, description: e.target.value });
+              }}
+            />
+            {data?.description?.length <= 254 ? null : (
+              <FormHelperText>
+                Description should be less than 255 characters
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl>
+            <Select
+              placeholder="Select category"
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setData({ ...data, category: e.target.value });
+              }}
+            >
+              <option value="programming">Programming</option>
+              <option value="music">Music</option>
+              <option value="gaming">Gaming</option>
+              <option value="cats">Cats</option>
+              <option value="coffee">Coffee</option>
+              <option value="idk">Idk</option>
+              <option value="shit">Shit</option>
+              <option value="other">Other</option>
+            </Select>
+            {data?.category !== "" ? null : (
+              <FormHelperText>Select atleast one category</FormHelperText>
+            )}
+          </FormControl>
+          {data?.title?.length >= 5 &&
+          data?.title?.length <= 50 &&
+          data?.description?.length <= 254 &&
+          data?.category !== "" &&
+          data?.url !== "" ? (
+            <Button
+              width="100%"
+              colorScheme="blue"
+              rounded="full"
+              onClick={uploadImageBoi}
+              isLoading={loading}
+              loadingText="Uploading..."
+            >
+              Upload
+            </Button>
+          ) : (
+            <Tooltip
+              label="Complete all the validation before uploading image"
+              shouldWrapChildren
+            >
+              <Button
+                colorScheme="blue"
+                rounded="full"
+                disabled={true}
+                width="100%"
+              >
+                Upload
+              </Button>
+            </Tooltip>
+          )}
         </Flex>
       </Flex>
     </Flex>

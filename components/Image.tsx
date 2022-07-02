@@ -1,19 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, Flex, Heading, IconButton } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
+  Skeleton,
+  Tooltip,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiArrowRightUpLine } from "react-icons/ri";
-import { FiShare, FiMoreHorizontal, FiDownload } from "react-icons/fi";
-import { IoHeartOutline } from "react-icons/io5";
+import { FiDownload } from "react-icons/fi";
+import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { ImageType } from "../utils/types";
+import { useSession } from "next-auth/react";
+import { saveAs } from "file-saver";
+import { GoComment } from "react-icons/go";
+import { useDispatch } from "react-redux";
 
 type Props = {
   image: ImageType;
+  cookie?: string;
 };
 
-const Image = (props: Props) => {
+const ImageBoi = (props: Props) => {
   const [imageHovered, setImageHovered] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
+  const isLiked =
+    //@ts-ignore
+    props.image?.likes?.filter((like) => like.userId === session?.user?.id)
+      .length > 0;
+  const downloadImage = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    saveAs(props.image?.url, "shit.png");
+  };
+  const isSaved =
+    //@ts-ignore
+    props.image?.saves?.filter((save) => save?.userId === session?.user?.id)
+      .length > 0;
+  const dispatch = useDispatch();
   return (
     <Flex
       width="100%"
@@ -25,8 +52,9 @@ const Image = (props: Props) => {
       onClick={() => {
         router.push(`/image/${props.image?.id}`);
       }}
+      boxShadow="rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px"
     >
-      <img
+      <Image
         className="imgboi"
         src={props.image?.url}
         alt=""
@@ -41,7 +69,6 @@ const Image = (props: Props) => {
           width="100%"
           height="100%"
           backgroundColor="#000000b7"
-          zIndex={50}
           position="absolute"
           top={0}
           borderRadius="12px"
@@ -62,7 +89,7 @@ const Image = (props: Props) => {
               colorScheme="blue"
               marginRight="10px"
             >
-              Save
+              {isSaved ? "UnSave" : "Save"}
             </Button>
           </Flex>
           <Flex
@@ -78,23 +105,53 @@ const Image = (props: Props) => {
               gap="2px"
               marginLeft="4px"
               cursor="pointer"
+              onClick={(event: React.MouseEvent) => {
+                event.stopPropagation();
+                router.push(`/user/${props.image?.authorId}`);
+              }}
+              width="60%"
+              flexWrap="wrap"
             >
               <RiArrowRightUpLine color="white" />
               <Heading color="white" fontSize="md" fontWeight="bold">
-                {props.image?.author?.name}
+                {props.image?.author?.name?.length > 15
+                  ? props.image?.author?.name?.slice(0, 14) + "..."
+                  : props.image?.author?.name}
               </Heading>
             </Flex>
-            <Flex alignItems="center" gap="9px" marginRight="4px">
-              <IconButton
-                icon={<IoHeartOutline size={22} />}
-                aria-label="Like"
-                rounded="full"
-              />
-              <IconButton
-                icon={<FiDownload size={20} />}
-                aria-label="Download"
-                rounded="full"
-              />
+            <Flex alignItems="center" gap="9px" marginRight="4px" flex={1}>
+              <Tooltip label={isLiked ? "Unlike" : "Like"}>
+                <IconButton
+                  icon={
+                    isLiked ? (
+                      <IoHeart size={22} />
+                    ) : (
+                      <IoHeartOutline size={22} />
+                    )
+                  }
+                  aria-label="Like"
+                  rounded="full"
+                />
+              </Tooltip>
+              <Tooltip label={"Comments"}>
+                <IconButton
+                  icon={<GoComment size={20} />}
+                  aria-label="Comments"
+                  rounded="full"
+                  onClick={(event: React.MouseEvent) => {
+                    event.stopPropagation();
+                    router.push(`/image/${props.image?.id}`);
+                  }}
+                />
+              </Tooltip>
+              <Tooltip label="Download">
+                <IconButton
+                  icon={<FiDownload size={20} />}
+                  aria-label="Download"
+                  rounded="full"
+                  onClick={downloadImage}
+                />
+              </Tooltip>
             </Flex>
           </Flex>
         </Flex>
@@ -103,4 +160,4 @@ const Image = (props: Props) => {
   );
 };
 
-export default Image;
+export default ImageBoi;
