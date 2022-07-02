@@ -47,7 +47,7 @@ const ProfileComponent = (props: Props) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const user: UserType = useSelector((state: any) => state?.user?.authData);
-  const SHARE_URL = `http://127.0.0.1:3000/user/${user?.id}`;
+  const SHARE_URL = `https://picturesh.vercel.app/user/${user?.id}`;
   const { data: session } = useSession();
   const dispatch = useDispatch();
   const isFollowing =

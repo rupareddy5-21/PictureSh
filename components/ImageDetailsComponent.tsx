@@ -70,7 +70,7 @@ const ImageDetailsComponent = (props: Props) => {
     //@ts-ignore
     dispatch(addComment(comment, props.cookie, image?.id));
   };
-  const SHARE_URL = `http://127.0.0.1:3000/image/${image?.id}`;
+  const SHARE_URL = `https://picturesh.vercel.app/image/${image?.id}`;
   const likeImageBoi = () => {
     //@ts-ignore
     dispatch(likeImage(image?.id, props.cookie));
